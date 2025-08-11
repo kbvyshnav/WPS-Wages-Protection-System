@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="WPS (Wage Protection System) for payroll compliance with Gulf countries' regulations." />
     <title>WPS - Main </title>
-	<link rel="icon" type="image/png" href="wps-logo.png">
+	  <link rel="icon" type="image/png" href="wps-logo.png">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -15,15 +15,15 @@
   <body>
     <!-- Top Header -->
     <div class="top-header">
-      <div class="company-info">
-    <img src="gmecc.png" alt="Global Money Exchange Company Logo" class="company-logo" />
-    <span class="company-name">GLOBAL MONEY EXCHANGE CO.LLC</span>
-</div>
+        <div class="company-info">
+            <img src="gmecc.png" alt="Global Money Exchange Company Logo" class="company-logo" />
+            <span class="company-name">GLOBAL MONEY EXCHANGE CO.LLC</span>
+        </div>
 
-      <div class="user-info">
-        <span class="username">gmec</span>
-        <i class="fas fa-user-circle" aria-hidden="true"></i>
-      </div>
+        <div class="user-info">
+          <span class="username">gmec</span>
+          <i class="fas fa-user-circle" aria-hidden="true"></i>
+        </div>
     </div>
 
     <!-- Sidebar Navigation -->
@@ -47,10 +47,10 @@
           <span>Employer</span>
           <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
           <div class="submenu">  
-			<a href="#" class="load-page" data-page="onboardingforms.html" data-parent="nav-employer">Employer Pre-Onboarding Forms (Print & Sign)</a>		  
-			<a href="#" class="load-page" data-page="employer-management.php" data-parent="nav-employer">Employer Management</a>
+            <a href="#" class="load-page" data-page="onboardingforms.html" data-parent="nav-employer">Employer Pre-Onboarding Forms (Print &    Sign)</a>		  
+            <a href="#" class="load-page" data-page="employer-management.php" data-parent="nav-employer">Employer Management</a>
             <a href="#" class="load-page" data-page="kyc-documents.php" data-parent="nav-employer">KYC Documents</a>
-			<a href="#" class="load-page" data-page="charges.php" data-parent="nav-employer">Charges</a>    			
+            <a href="#" class="load-page" data-page="charges.php" data-parent="nav-employer">Charges</a>    			
           </div>
         </div>
 		
@@ -61,36 +61,36 @@
           <div class="submenu">
             <a href="#" class="load-page" data-page="employee-management.php" data-parent="nav-employee">Employee Management</a>
             <!-- <a href="#">Employee Transfer</a>
-			<a href="#">Edenred Card Maintenance</a> -->
+			      <a href="#">Edenred Card Maintenance</a> -->
           </div>
         </div>
 		
-		<div class="nav-item" id="nav-salary" tabindex="0">
+		    <div class="nav-item" id="nav-salary" tabindex="0">
           <i class="fas fa-wallet" aria-hidden="true"></i>
           <span>Salary</span>
           <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
           <div class="submenu">
-			<a href="#" class="load-page" data-page="prepare-salary.php" data-parent="nav-salary">Prepare SIF</a>
-			<!-- <a href="#" class="load-page" data-page="receive-fund.html" data-parent="nav-salary">Receive Fund</a> -->
+            <a href="#" class="load-page" data-page="prepare-salary.php" data-parent="nav-salary">Prepare SIF</a>
+            <!-- <a href="#" class="load-page" data-page="receive-fund.html" data-parent="nav-salary">Receive Fund</a> -->
           </div>
         </div>
 		
-		<div class="nav-item" id="nav-funding" tabindex="0">
+		    <div class="nav-item" id="nav-funding" tabindex="0">
           <i class="fas fa-hand-holding-usd" aria-hidden="true"></i>
           <span>Funding</span>
           <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
           <div class="submenu">
-			<a href="#" class="load-page" data-page="salprefunding.php" data-parent="nav-funding">Funding without Salary details</a>
+		      	<a href="#" class="load-page" data-page="salprefunding.php" data-parent="nav-funding">Funding without Salary details</a>
           </div>
         </div>
 		
-		<div class="nav-item" id="nav-master" tabindex="0">
-		  <i class="fas fa-database"  aria-hidden="true"></i>
+		    <div class="nav-item" id="nav-master" tabindex="0">
+		      <i class="fas fa-database"  aria-hidden="true"></i>
           <span>HO Functions</span>
           <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
           <div class="submenu">
             <a href="#" class="load-page" data-page="charge-master.php" data-parent="nav-master">Charge Setup</a>
-			<!-- <a href="#" class="load-page" data-page="#" data-parent="nav-master">POS</a> -->
+			      <!-- <a href="#" class="load-page" data-page="#" data-parent="nav-master">POS</a> -->
           </div>
         </div>
 		
@@ -101,7 +101,7 @@
           <div class="submenu">
             <a href="#" class="load-page" data-page="fundingrep.php" data-parent="nav-reports">Funding Reports</a>
             <!-- <a href="#">Txn Reports</a> -->
-			<!-- <a href="#">Regulatory Reports</a> -->
+			      <!-- <a href="#">Regulatory Reports</a> -->
           </div>
         </div>
 
@@ -127,7 +127,7 @@
 		const iframe = document.getElementById("mainFrame");
 
 		// Load home.php by default
-		iframe.src = "home.php";
+		iframe.src = "home.html";
 
 		// Make Home active by default
 		setActiveMenu("nav-home");
@@ -136,7 +136,7 @@
 		const homeNav = document.getElementById("nav-home");
 		homeNav.addEventListener("click", function (e) {
 		  e.preventDefault();
-		  iframe.src = "home.php";
+		  iframe.src = "home.html";
 		  setActiveMenu("nav-home");
 		});
 
