@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - WPS Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary-color: #4270f4;
+      --primary-light: #edf0fb;
+      --primary-dark: #0f2a65;
+      --secondary-color: #3b3f5c;
+      --gray-light: #f5f7ff;
+      --gray-medium: #e6e9f4;
+      --gray-dark: #828795;
+      --danger: #f36c6c;
+      --success: #2dbf78;
+      --white: #ffffff;
+      --text-primary: #262a39;
+      --text-secondary: #6c7380;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --border-radius: 18px;
+      --header-height: 60px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-light);
+      color: var(--text-primary);
+      padding: 20px;
+      font-size: 16px;
+      min-width: 900px;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header Styles */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      height: var(--header-height);
+    }
+    
+    .greeting {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    
+    .welcome-title {
+      font-size: 25px;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--text-primary), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text; 
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+    
+    .search-bar {
+      background: var(--white);
+      border-radius: 50px;
+      padding: 12px 25px;
+      display: flex;
+      align-items: center;
+      width: 300px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .search-bar:focus-within {
+      box-shadow: 0 5px 15px rgba(66, 112, 244, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .search-bar input {
+      border: none;
+      outline: none;
+      width: 100%;
+      margin-left: 15px;
+      font-size: 15px;
+      color: var(--text-primary);
+    }
+    
+    .search-bar input::placeholder {
+      color: var(--gray-dark);
+    }
+    
+    .search-bar i {
+      color: var(--gray-dark);
+      font-size: 16px;
+    }
+    
+    /* Dashboard Content Styles */
+    .dashboard-container {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    /* Status Cards */
+    .status-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      margin-bottom: 25px;
+    }
+    
+    .status-card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .status-card:hover, .status-card:focus {
+      transform: translateY(-7px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      outline: none;
+    }
+    
+    .status-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 0;
+      background: var(--primary-color);
+      transition: height 0.3s ease;
+    }
+    
+    .status-card:hover::before, .status-card:focus::before {
+      height: 100%;
+    }
+    
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .status-card:hover .card-icon, .status-card:focus .card-icon {
+      transform: scale(1.1);
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+    
+    .card-title {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    
+    .card-amount {
+      font-size: 26px;
+      font-weight: 700;
+      background: linear-gradient(45deg, #262a39, #4270f4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+	
+	.card-amount .currency {
+	  font-size: 0.6em; 
+	}
+
+    
+    /* Promo Card */
+    .promo-card {
+      background: linear-gradient(135deg, var(--primary-light), #dbe4ff);
+      border-radius: var(--border-radius);
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: var(--card-shadow);
+    }
+    
+    .promo-card::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.05)
+      );
+      border-radius: 50%;
+      top: -150px;
+      right: -150px;
+    }
+    
+    .promo-info {
+      max-width: 60%;
+      z-index: 1;
+    }
+    
+    .promo-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--text-primary), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .promo-desc {
+      color: var(--text-secondary);
+      margin-bottom: 25px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    .promo-btn {
+      background-color: #6882cd;
+      color: var(--white);
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 8px 15px rgba(66, 112, 244, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    /* Quick Links Section */
+    .quick-links-section {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 15px 20px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 20px;
+    }
+    
+    .quick-links-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+      position: relative;
+      display: inline-block;
+    }
+    
+    .quick-links-title::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 2px;
+      background-color: var(--primary-color);
+      bottom: -2px;
+      left: 0;
+    }
+    
+    .quick-links-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    
+    .quick-link {
+	  background-color:var(--primary-light);
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      padding: 6px 14px;
+      border-radius: 15px;
+      border: 1px solid transparent;
+    }
+    
+    .quick-link:hover, .quick-link:focus {
+      color: var(--text-primary);
+      background-color: var(--gray-medium);
+      border: 1px solid var(--gray-dark);
+    }
+    
+    /* Responsive Media Queries */
+    @media (max-width: 1200px) {
+      .status-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .quick-links-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+        overflow-y: auto;
+        height: auto;
+      }
+      
+      .status-cards {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .promo-info {
+        max-width: 100%;
+      }
+      
+      .quick-links-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="welcome-section">
+      <p class="greeting">CMETS,</p>
+      <h1 class="welcome-title">Wage Protection System(WPS)</h1>
+    </div>
+
+    <div class="header-right">
+      <div class="search-bar">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" placeholder="Search..." aria-label="Search" />
+      </div>
+    </div>
+  </header>
+  
+  <!-- Dashboard Container -->
+  <div class="dashboard-container">
+    <!-- Stats Cards -->
+    <div class="status-cards">
+      <div class="status-card">
+        <div class="card-icon">
+          <i class="fas fa-building" aria-hidden="true"></i>
+        </div>
+        <p class="card-title">No. of registered companies active</p>
+        <h2 class="card-amount">38</h2>
+      </div>
+
+      <div class="status-card">
+        <div class="card-icon">
+          <i class="fas fa-user-tie" aria-hidden="true"></i>
+        </div>
+        <p class="card-title">No. of active employees</p>
+        <h2 class="card-amount">31</h2>
+      </div>
+
+      <div class="status-card">
+        <div class="card-icon">
+          <i class="fas fa-money-check-alt" aria-hidden="true"></i>
+        </div>
+        <p class="card-title">Total Salary Processed</p>
+        <h2 class="card-amount"><span class="currency">OMR</span> --- </h2>
+      </div>
+
+      <div class="status-card">
+        <div class="card-icon">
+          <i class="fas fa-clock" aria-hidden="true"></i>
+        </div>
+        <p class="card-title">Pending Salary Approvals</p>
+        <h2 class="card-amount">--</h2>
+      </div>
+    </div>
+
+    <!-- Promo Card -->
+    <div class="promo-card">
+      <div class="promo-info">
+        <h2 class="promo-title">Simplify Payroll Compliance with WPS</h2>
+        <p class="promo-desc">
+          Ensures fast, secure, and fully compliant salary transfers through our integrated CMETS platform — built to meet GCC countries' regulatory requirements / prescriptions seamlessly.
+        </p>
+        <button class="promo-btn">Click the desired option in the left panel</button>
+      </div>
+    </div>
+    
+    <!-- Quick Links Section -->
+    <div class="quick-links-section">
+      <h3 class="quick-links-title">Quick Links</h3>
+      <div class="quick-links-container">
+        <a href="employer-management.php" class="quick-link">Employer Management</a>
+        <a href="employee-management.php" class="quick-link">Employee Management</a>
+        <a href="receive-fund.html" class="quick-link">Receive Funds</a>
+        <a href="prepare-salary.html" class="quick-link">Prepare Salary</a>
+        <a href="charge-master.php" class="quick-link">Charges Master</a>
+        <a href="fundingrep.html" class="quick-link">Funding Reports</a>
+		
+      </div>
+    </div>
+  </div>
+</body>
+</html>
