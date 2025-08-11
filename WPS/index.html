@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="WPS (Wage Protection System) for payroll compliance with Gulf countries' regulations." />
+    <title>WPS - Main </title>
+	<link rel="icon" type="image/png" href="wps-logo.png">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Top Header -->
+    <div class="top-header">
+      <div class="company-info">
+    <img src="gmecc.png" alt="Global Money Exchange Company Logo" class="company-logo" />
+    <span class="company-name">GLOBAL MONEY EXCHANGE CO.LLC</span>
+</div>
+
+      <div class="user-info">
+        <span class="username">gmec</span>
+        <i class="fas fa-user-circle" aria-hidden="true"></i>
+      </div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+      <div class="logo">
+        <!-- SVG Logo with Title for Accessibility -->
+        <svg width="100" height="40" viewBox="0 0 100 40" role="img" aria-labelledby="logoTitle">
+          <title id="logoTitle">Wage Protection System</title>
+          <path d="M12,15 L30,15 L24,27 L12,27 Z" fill="#4270F4" />
+          <text x="38" y="27" fill="#262A39" font-size="20" font-weight="bold">WPS</text>
+        </svg>
+      </div>
+
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="#" class="nav-item active" id="nav-home" aria-current="page">
+          <i class="fas fa-home" aria-hidden="true"></i>
+          <span>Home</span>
+        </a>
+        <div class="nav-item" id="nav-employer" tabindex="0">
+          <i class="fas fa-user-tie" aria-hidden="true"></i>
+          <span>Employer</span>
+          <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
+          <div class="submenu">  
+			<a href="#" class="load-page" data-page="onboardingforms.html" data-parent="nav-employer">Employer Pre-Onboarding Forms (Print & Sign)</a>		  
+			<a href="#" class="load-page" data-page="employer-management.php" data-parent="nav-employer">Employer Management</a>
+            <a href="#" class="load-page" data-page="kyc-documents.php" data-parent="nav-employer">KYC Documents</a>
+			<a href="#" class="load-page" data-page="charges.php" data-parent="nav-employer">Charges</a>    			
+          </div>
+        </div>
+		
+        <div class="nav-item" id="nav-employee" tabindex="0">
+          <i class="fas fa-users" aria-hidden="true"></i>
+          <span>Employee</span>
+          <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
+          <div class="submenu">
+            <a href="#" class="load-page" data-page="employee-management.php" data-parent="nav-employee">Employee Management</a>
+            <!-- <a href="#">Employee Transfer</a>
+			<a href="#">Edenred Card Maintenance</a> -->
+          </div>
+        </div>
+		
+		<div class="nav-item" id="nav-salary" tabindex="0">
+          <i class="fas fa-wallet" aria-hidden="true"></i>
+          <span>Salary</span>
+          <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
+          <div class="submenu">
+			<a href="#" class="load-page" data-page="prepare-salary.php" data-parent="nav-salary">Prepare SIF</a>
+			<!-- <a href="#" class="load-page" data-page="receive-fund.html" data-parent="nav-salary">Receive Fund</a> -->
+          </div>
+        </div>
+		
+		<div class="nav-item" id="nav-funding" tabindex="0">
+          <i class="fas fa-hand-holding-usd" aria-hidden="true"></i>
+          <span>Funding</span>
+          <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
+          <div class="submenu">
+			<a href="#" class="load-page" data-page="salprefunding.php" data-parent="nav-funding">Funding without Salary details</a>
+          </div>
+        </div>
+		
+		<div class="nav-item" id="nav-master" tabindex="0">
+		  <i class="fas fa-database"  aria-hidden="true"></i>
+          <span>HO Functions</span>
+          <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
+          <div class="submenu">
+            <a href="#" class="load-page" data-page="charge-master.php" data-parent="nav-master">Charge Setup</a>
+			<!-- <a href="#" class="load-page" data-page="#" data-parent="nav-master">POS</a> -->
+          </div>
+        </div>
+		
+        <div class="nav-item" id="nav-reports" tabindex="0">
+          <i class="fas fa-chart-bar" aria-hidden="true"></i>
+          <span>Reports</span>
+          <i class="fas fa-chevron-right arrow" aria-hidden="true"></i> 
+          <div class="submenu">
+            <a href="#" class="load-page" data-page="fundingrep.php" data-parent="nav-reports">Funding Reports</a>
+            <!-- <a href="#">Txn Reports</a> -->
+			<!-- <a href="#">Regulatory Reports</a> -->
+          </div>
+        </div>
+
+      </nav>
+
+      <div class="sidebar-footer">
+         <!--<button class="back-btn" aria-label="Go back">
+          <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
+        </button> -->
+      </div>
+	  
+    </div>
+	
+	
+    <!-- Main Content -->
+	<div class="main-content">
+	  <iframe id="mainFrame" src="" width="100%" height="100%" style="border: none;"></iframe>
+	</div>
+
+
+	<script>
+	  document.addEventListener("DOMContentLoaded", function () {
+		const iframe = document.getElementById("mainFrame");
+
+		// Load home.php by default
+		iframe.src = "home.php";
+
+		// Make Home active by default
+		setActiveMenu("nav-home");
+
+		// Handle Home button click
+		const homeNav = document.getElementById("nav-home");
+		homeNav.addEventListener("click", function (e) {
+		  e.preventDefault();
+		  iframe.src = "home.php";
+		  setActiveMenu("nav-home");
+		});
+
+		// Handle submenu clicks
+		document.querySelectorAll(".load-page").forEach(link => {
+		  link.addEventListener("click", function (e) {
+			e.preventDefault();
+			const page = this.getAttribute("data-page");
+			const parentId = this.getAttribute("data-parent");
+			iframe.src = page;
+			setActiveMenu(parentId);
+		  });
+		});
+
+		// Function to switch active class
+		function setActiveMenu(activeId) {
+		  // Remove active from all nav items
+		  document.querySelectorAll(".nav-item").forEach(item => {
+			item.classList.remove("active");
+		  });
+
+		  // Add active to the selected one
+		  const activeItem = document.getElementById(activeId);
+		  if (activeItem) {
+			activeItem.classList.add("active");
+		  }
+		}
+	  });
+	  
+	  //document.querySelector(".back-btn").addEventListener("click", function () {
+		  //window.history.back();
+		//});
+
+	</script>
+
+
+
+  </body>
+</html>
