@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Employer onboarding forms</title>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+          <style>
+            :root {
+              --primary-color: #4270f4;
+              --primary-light: #edf0fb;
+              --primary-dark: #0f2a65;
+              --gray-light: #f5f7ff;
+              --gray-medium: #e6e9f4;
+              --white: #ffffff;
+              --text-primary: #262a39;
+              --success: #28a745;
+              --success-light: #d4edda;
+            }
+            
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            }
+            
+            body {
+              background-color: var(--gray-light);
+              color: var(--text-primary);
+              padding: 15px;
+              font-size: 13px;
+            }
+            
+            .docs-container {
+              background-color: var(--white);
+              border-radius: 10px;
+              padding: 15px;
+              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+              max-width: 100%;
+              margin: 0 auto;
+              height: 90vh;
+            }
+            
+            h2 {
+              margin-bottom: 15px;
+              color: var(--primary-dark);
+              border-bottom: 1px solid var(--gray-medium);
+              padding-bottom: 8px;
+              font-size: 18px;
+			  font-weight: 600;
+            }
+
+            /* Instructions Box */
+            .instructions-box {
+              padding: 15px;
+              background-color: var(--primary-light);
+              border-radius: 8px;
+              font-size: 13px;
+              color: var(--primary-dark);
+              margin-bottom: 20px;
+              border-left: 4px solid var(--primary-color);
+            }
+            
+            /* Table Styles */
+            .fundrep-table-container {
+              overflow-x: auto;
+              border-radius: 8px;
+              border: 1px solid var(--gray-medium);
+              margin-bottom: 15px;
+              margin-top: 20px;
+            }
+            
+            .fundrep-list-table {
+              width: 100%;
+              border-collapse: collapse;
+              table-layout: fixed; 
+            }
+            
+            .fundrep-list-table th,
+            .fundrep-list-table td {
+              padding: 16px 12px;
+              text-align: left;
+              font-size: 13px;
+              border-bottom: 1px solid var(--gray-medium);
+            }
+            
+            .fundrep-list-table th {
+              background-color: var(--primary-light);
+              color: var(--primary-dark);
+              font-weight: 600;
+              position: sticky;
+              top: 0;
+            }
+            
+            .fundrep-list-table tbody tr:hover {
+              background-color: var(--gray-light);
+            }
+
+            .fundrep-list-table tbody tr:last-child td {
+              border-bottom: none;
+            }
+            
+            /* Improved column widths */
+            .fundrep-list-table th:nth-child(1),
+            .fundrep-list-table td:nth-child(1) {
+              width: 8%;
+            }
+
+            .fundrep-list-table th:nth-child(2),
+            .fundrep-list-table td:nth-child(2) {
+              width: 70%;
+            }
+
+            .fundrep-list-table th:nth-child(3),
+            .fundrep-list-table td:nth-child(3) {
+              width: 22%;
+              text-align: center;
+            }
+
+            /* Step number styling */
+            .step-number {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 28px;
+              height: 28px;
+              background-color: var(--primary-color);
+              color: var(--white);
+              border-radius: 50%;
+              font-weight: 600;
+              font-size: 14px;
+            }
+			
+			/* Navigation button styling */
+			.nav-btn {
+			 display: inline-flex;
+			 align-items: center;
+			 gap: 6px;
+			 padding: 8px 16px;
+			 background-color: var(--success);
+			 color: var(--white);
+			 text-decoration: none;
+			 border-radius: 6px;
+			 font-size: 12px;
+			 font-weight: 500;
+			 transition: all 0.3s ease;
+			 border: none;
+			 cursor: pointer;
+			}
+
+			.nav-btn:hover {
+			 background-color: #218838;
+			 transform: translateY(-2px);
+			 box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+			}
+
+			.nav-btn i {
+			 font-size: 11px;
+			}
+
+            /* Download button styling */
+            .download-btn {
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              padding: 8px 16px;
+              background-color: var(--primary-color);
+              color: var(--white);
+              text-decoration: none;
+              border-radius: 6px;
+              font-size: 12px;
+              font-weight: 500;
+              transition: all 0.3s ease;
+              border: none;
+              cursor: pointer;
+            }
+
+            .download-btn:hover {
+              background-color: var(--primary-dark);
+              transform: translateY(-2px);
+              box-shadow: 0 4px 12px rgba(66, 112, 244, 0.3);
+            }
+
+            .download-btn i {
+              font-size: 11px;
+            }
+
+
+          </style>
+        </head>
+        <body>
+        <div class="docs-container">
+            <h2>Employer Forms for Onboarding – Print, Sign & Upload</h2>
+            
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <!-- Instructions Box -->
+            <div class="instructions-box">
+              <i class="fas fa-info-circle" style="margin-right: 8px;"></i>
+              General Instructions – How to Complete & Upload Employer Forms
+            </div>
+            
+            <!-- Table Container -->
+            <div class="fundrep-table-container">
+              <table class="fundrep-list-table" id="fundrepTable">
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th>Action / What to Do</th>           
+                    <th style="text-align: center;">Download / Print Form</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="step-number">1</div>
+                    </td>
+                    <td>
+                      When the employer first approaches us (or we approach them):<br>
+                      - Print the blank onboarding forms and master charges form.<br>
+                      - Give them to the employer to fill and return without signatures.
+                    </td>
+                    <td>
+                      <button class="download-btn" onclick="NewWindow('blankdocs.pdf')" title="Print blank documents">
+						Blank Documents
+					  </button>
+                    </td>
+                  </tr>
+                  
+                  <tr>
+                    <td>
+                      <div class="step-number">2</div>
+                    </td>
+                    <td>Fill in the Master Charges Form with the agreed charges.</td>
+                    <td>
+                      <button class="download-btn" onclick="NewWindow('mchargespdf.php')" title="Print master charges form">                       
+                        Master charges form
+                      </button>
+                    </td>
+                  </tr>
+                  
+                  <tr>
+                    <td>
+                      <div class="step-number">3</div>
+                    </td>
+                    <td>
+                      After receiving the filled forms:
+                      – Create the employer in the WPS Employer Master on this site.<br>
+                      – Add the related persons and the agreed charges.<br>
+                      – Generate the updated forms and get them signed and sealed by the Employer.				  
+                    </td>
+                    <td>
+                      <!-- <button class="download-btn" onclick="NewWindow('compselectact.php')" title="Print updated forms after creating employer"> -->
+					   <button class="download-btn" onclick="NewWindow('wpscompanylistdoc.php')" title="Print updated forms after creating employer">
+                        Updated form
+                      </button>
+                    </td>
+                  </tr>
+                  
+
+					
+                </tbody>
+              </table>
+            </div>
+        </div>
+        
+        <script>
+		
+
+
+          
+        </script>
+        
+        </body>
+        </html>
