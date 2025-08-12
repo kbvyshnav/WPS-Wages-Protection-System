@@ -260,6 +260,26 @@
                       </button>
                     </td>
                   </tr>
+
+                  <tr>
+					<td>
+						<div class="step-number">4</div>
+					  </td>
+					  <td>
+						Once you receive the signed and sealed forms:<br>
+						– Scan and upload the signed documents and related reports (e.g., site visit report) inside the KYC Documents menu.<br>
+						– Inform the Head Office (HO) to review and approve.<br>
+						– After approval, create the employee records.				  
+					  </td>
+					  <td>
+						<button class="nav-btn" onclick="window.location.href='kyc-documents.php'" title="Go to KYC Documents">
+						  <i class="fas fa-external-link-alt"></i>
+						  Go to KYC Documents
+						</button>
+					</td>
+				  </tr>
+
+
                   
 
 					
@@ -269,9 +289,16 @@
         </div>
         
         <script>
-		
 
-
+        function NewWindow(url) {
+			var wind = window.open(
+				'', 
+				'new_2',
+				'left=0,top=0,width=1000,height=600,resizable=1,scrollbars=yes,toolbar=no,directories=no,menubar=0,status=0'
+			);
+			wind.location.href = url;
+			wind.focus();
+		}
           
         </script>
         
