@@ -1,0 +1,590 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company List - WPS Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <script src="autocomplete-search.js"></script>
+  <style>
+    :root {
+      --primary-color: #4270f4;
+      --primary-light: #edf0fb;
+	  --companycontainer-light: #d1eeff;
+      --primary-dark: #0f2a65;
+      --secondary-color: #3b3f5c;
+      --gray-light: #f5f7ff;
+      --gray-medium: #e6e9f4;
+      --gray-dark: #828795;
+      --underline: #ff6f61;
+      --danger: #f36c6c;
+      --success: #2dbf78;
+      --white: #ffffff;
+      --text-primary: #262a39;
+      --text-secondary: #6c7380;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --border-radius: 18px;
+      --header-height: 50px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-light);
+      color: var(--text-primary);
+      padding: 20px;
+      font-size: 14px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+	
+    /* Header Styles */
+    .comp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
+      height: var(--header-height);
+    }
+    
+    .comp-page-title{
+	  position: relative;
+	  display: inline-block; 
+	  font-size: 22px;
+	  font-weight: 600;
+	  color: var(--primary-dark);
+	  margin-bottom: 5px;
+	  padding-bottom: 5px;
+	}
+
+	.comp-page-title::after {
+	  content: "";
+	  position: absolute;
+	  bottom: 0;
+	  left: 0;
+	  width: 15%; 
+	  border-bottom: 3px solid var(--underline);
+	}
+	
+    /* Main Content Styles */
+    .comp-main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      margin: 0 auto;
+      width: 100%;
+      overflow: auto;
+    }
+    
+	
+    /* Card Styles */
+    .comp-card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    
+
+    /* Table Search Box */
+	.comp-table-search-container {
+	  display: flex;
+	  align-items: center;
+	  background: var(--white);
+	  border-radius: 6px;
+	  padding: 12px 16px;
+	  border: 1px solid var(--gray-medium);
+	  width: 500px;
+	  margin-bottom: 15px;
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+	  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.comp-table-search-container input {
+	  border: none;
+	  outline: none;
+	  background: transparent;
+	  width: 100%;
+	  font-size: 14px;
+	  margin-left: 8px;
+	}
+
+	/*focus effect on input */
+	.comp-table-search-container:has(input:focus) {
+	  border-color: var(--primary-color);
+	  box-shadow: 0 0 0 3px rgba(66, 112, 244, 0.15);
+	  outline: none;
+	}
+
+	.comp-table-search-container i {
+	  color: var(--primary-color);
+	  font-size: 14px;
+	}
+
+    
+    /* Table Styles ---------------------------------*/
+    .comp-table-container {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--gray-medium);
+      margin-bottom: 15px;
+    }
+    
+    .comp-list-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .comp-list-table th,
+    .comp-list-table td {
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+	
+    .comp-list-table th {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    
+    .comp-list-table tr {
+      border-bottom: 1px solid var(--gray-medium);
+      transition: background-color 0.2s;
+    }
+    
+    .comp-list-table tbody tr:last-child {
+      border-bottom: none;
+    }
+    
+    .comp-list-table tbody tr:hover {
+      background-color: var(--gray-light);
+    }
+    
+    /* Action Buttons */
+    .comp-action-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    
+    .comp-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .comp-view-btn {
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+    }
+    
+    .comp-edit-btn {
+      background-color: rgba(255, 183, 43, 0.1);
+      color: #ffb72b;
+    }
+    
+    .comp-delete-btn {
+      background-color: rgba(243, 108, 108, 0.1);
+      color: var(--danger);
+    }
+    
+    .comp-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+	
+	.comp-list-table td:nth-child(3) a {
+	  color: black;
+	  text-decoration: none;
+	  transition: text-decoration 0.3s;
+	}
+
+	.comp-list-table td:nth-child(3) a:hover {
+	  color: var(--primary-color);	
+	  text-decoration: underline;
+	}
+
+    /* Scroll to Top Button Styles */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 35px;
+      right: 54px;
+      width: 45px;
+      height: 45px;
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(66, 112, 244, 0.3);
+      transition: all 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      z-index: 1000;
+    }
+
+    .scroll-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .scroll-to-top:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(66, 112, 244, 0.4);
+    }
+
+    .scroll-to-top:active {
+      transform: translateY(-1px);
+    }
+
+	/* Pagination Styles */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .page-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background-color: var(--white);
+      border: 1px solid var(--gray-medium);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+    
+    .page-btn:hover {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      border-color: var(--primary-color);
+    }
+    
+    .page-btn.active {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-color: var(--primary-color);
+    }
+    
+    .page-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background-color: var(--white);
+      border: 1px solid var(--gray-medium);
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+    
+    .page-nav:hover {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      border-color: var(--primary-color);
+    }
+    
+    .page-nav.disabled {
+      color: var(--gray-dark);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    
+    
+  </style>
+</head>
+<body>
+  <header class="comp-header">
+    <div class="comp-welcome-section">
+      <h1 class="comp-page-title">WPS Company List</h1>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <div class="comp-main-content">
+    <div class="comp-card">
+      
+      <!-- Table Search Box -->
+      <div class="comp-table-search-container">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" placeholder="Search by Employer No. or Name..." aria-label="Search company" id="tableSearch" onkeyup="searchcompany()" />
+      </div>
+      
+      <!-- Table Container -->
+      <div class="comp-table-container">
+        <table class="comp-list-table" id="companyTable">
+          <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>CR Number</th>
+              <th>Company Name</th>
+              <th>Ac No</th>
+              <th>License Expiry</th>           
+              <th style="text-align: right;" id='action'>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>q</td>
+              <td>4313125</td>
+              <td><a  href="javascript:navigateTo('update-employer.html')">MIDDLE EAST FINANCIAL SOFTWARE SOLUTIONS</a></td>
+              <td><?php echo $IBAN ?></td>
+              <td><?php echo $LICENSE_ISSUEDATE ?></td>
+              <td class='actiontd'>
+                <div class="comp-action-buttons">
+                  <!-- <button onclick="navigateTo('pgrm.php?crn=<?php echo $MOLID?>')" class="comp-action-btn comp-view-btn" title="View company">
+                    <i class="fas fa-eye"></i>
+                  </button> -->
+                  <button class="comp-action-btn comp-edit-btn" title="Edit company" onclick="navigateTo('update-employer.php?crn=<?php echo $MOLID?>','<?php echo $MOLID?>')">	  
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button class="comp-action-btn comp-delete-btn" title="Delete company">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+			<?php
+			$slno++;
+			}
+			?>
+          </tbody>
+        </table>
+      </div>
+      
+      <!--  Pagination section -->
+        <div class="pagination">
+          <span class="page-label">Page:</span>
+		  <?php 
+		  if ($rcount>$limit)  { 
+			$pages=$rcount/$limit;$pages=$pages+1;$pages=(integer)  $pages;
+		  ?>
+          <button class="page-nav <?php if ($p<=1){echo "disabled";}?>" title="Previous Page" onclick="pagenation('<?php if ($p>0){echo $p-1;}?>','<?php echo $rcount?>');">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+		  <?php 
+			
+			$i=1;  
+			
+			while ($i<=$pages) {
+				$j=$i;
+
+		  ?>
+          <button class="page-btn <?php if($i==$p){ echo "active";}?>" onclick="pagenation('<?php echo $i?>','<?php echo $rcount?>');"><?php echo $i?></button>
+		  <?php $i++; }?>
+		  <button class="page-nav <?php if ($p>=$pages){echo "disabled";}?>" title="Next Page" onclick="pagenation('<?php if ($p<$pages){echo $p+1;}?>','<?php echo $rcount?>');">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+		  <?php }?>
+        </div>  
+    </div>
+  </div>
+  
+  <!-- Scroll Button (Top/Bottom) -->
+	<button class="scroll-to-top" id="scrollBtn" title="Go to bottom">
+	  <i class="fas fa-chevron-down"></i>
+	</button>
+
+  <script>
+		var url = parent.opener.location.pathname;
+		if(url!='/central/wps_frontend/employer-management.php'){
+			document.getElementById('action').style='display: none';
+			Array.from(document.getElementsByClassName('actiontd')).forEach(function(el) {
+				el.style.display = 'none';
+			});
+		}
+		else{
+			document.getElementById('action').style='';
+			Array.from(document.getElementsByClassName('actiontd')).forEach(function(el) {
+				el.style.display = '';
+			});
+		}
+
+		//  scroll to top/bottom functionality
+		const scrollBtn = document.getElementById('scrollBtn');
+		const mainContent = document.querySelector('.comp-main-content');
+		let isAtTop = true; // Track current position state
+
+		// Show/hide and toggle scroll button based on scroll position
+		function toggleScrollButton() {
+			const scrollTop = mainContent.scrollTop;
+			const scrollHeight = mainContent.scrollHeight;
+			const clientHeight = mainContent.clientHeight;
+			const isScrollable = scrollHeight > clientHeight;
+			
+			if (!isScrollable) {
+				// If content is not scrollable, hide the button
+				scrollBtn.classList.remove('show');
+				return;
+			}
+			
+			if (scrollTop > 100) {
+				// User has scrolled down - show "scroll to top" button
+				scrollBtn.classList.add('show');
+				scrollBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+				scrollBtn.title = 'Back to top';
+				isAtTop = false;
+			} else if (scrollTop < 50) {
+				// User is near the top - show "scroll to bottom" button
+				scrollBtn.classList.add('show');
+				scrollBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+				scrollBtn.title = 'Go to bottom';
+				isAtTop = true;
+			}
+		}
+
+		// Handle scroll button click
+		function handleScrollClick() {
+			if (isAtTop) {
+				// Scroll to bottom
+				mainContent.scrollTo({
+					top: mainContent.scrollHeight,
+					behavior: 'smooth'
+				});
+			} else {
+				// Scroll to top
+				mainContent.scrollTo({
+					top: 0,
+					behavior: 'smooth'
+				});
+			}
+		}
+
+		// Initialize the scroll button on page load
+		function initializeScrollButton() {
+			// Show the bottom button by default if content is scrollable
+			const isScrollable = mainContent.scrollHeight > mainContent.clientHeight;
+			if (isScrollable) {
+				scrollBtn.classList.add('show');
+				scrollBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+				scrollBtn.title = 'Go to bottom';
+				isAtTop = true;
+			}
+		}
+
+		// Event listeners
+		mainContent.addEventListener('scroll', toggleScrollButton);
+		scrollBtn.addEventListener('click', handleScrollClick);
+
+		// Initialize on page load
+		document.addEventListener('DOMContentLoaded', initializeScrollButton);
+		// Also call immediately in case DOMContentLoaded already fired
+		initializeScrollButton();
+
+		function navigateTo(url,cmpid='') {
+			// Change the current iframe content
+			var path= parent.opener.location.pathname;
+			if(path=='/central/wps_frontend/kyc-documents.php'){
+				parent.opener.location.href='kyc-documents.php?cmpid='+cmpid+'&flag=1';
+			}
+			else if(path=='/central/wps_frontend/charges.php'){
+				parent.opener.location.href='charges.php?cmpid='+cmpid+'&flag=1'; 
+			}
+			else if(path=='/central/wps_frontend/employee-management.php'){
+				parent.opener.location.href='employee-management.php?cmpid='+cmpid+'&flag=1';
+			}
+			else if(path=='/central/wps_frontend/prepare-salary.php'){
+				parent.opener.location.href='prepare-salary.php?cmpid='+cmpid+'&flag=1';
+			}
+			else if(path=='/central/wps_frontend/salprefunding.php'){
+				parent.opener.location.href='salprefunding.php?cmpid='+cmpid+'&flag=1';
+			}
+			else if(path=='/central/wps_frontend/companytxnsrep.php'){
+				parent.opener.location.href='companytxnsrep.php?cmpid='+cmpid+'&flag=1';
+			}
+			else if(path=='/central/wps_frontend/employeetxnsrep.php'){
+				parent.opener.location.href='employeetxnsrep.php?cmpid='+cmpid+'&flag=1';
+			}
+			else if(path=='/central/wps_frontend/emptransfer.php'){
+				parent.opener.location.href='emptransfer.php?cmpid='+cmpid+'&flag=1';
+			}
+			else{
+				parent.opener.location.href=url
+			}
+			window.close();
+		}
+
+		// Simple search functionality for the table
+		function searchcompany() {
+			// Declare variables
+			let input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("tableSearch");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("companyTable");
+			tr = table.getElementsByTagName("tr");
+
+			// Loop through all table rows, and hide those who don't match the search query
+			for (i = 0; i < tr.length; i++) {
+				// Skip header row
+				if (i === 0) continue;
+				
+				let found = false;
+				// Check all cells in the row (except the last one with actions)
+				for (let j = 0; j < tr[i].cells.length - 1; j++) {
+					td = tr[i].cells[j];
+					if (td) {
+						txtValue = td.textContent || td.innerText;
+						if (txtValue.toUpperCase().indexOf(filter) > -1) {
+							found = true;
+							break;
+						}
+					}
+				}
+				
+				if (found) {
+					tr[i].style.display = "";
+				} else {
+					tr[i].style.display = "none";
+				}
+			}
+		}
+
+		function pagenation(p,rc){
+			window.location.href="companylist.php?p="+p+"&rc="+rc;
+		}
+	
+  </script>
+</body>
+</html>
