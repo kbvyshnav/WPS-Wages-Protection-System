@@ -368,16 +368,13 @@
 
             <tr>
               <td>q</td>
-              <td>4313125</td>
+              <td>7890854</td>
               <td><a  href="javascript:navigateTo('update-employer.html')">MIDDLE EAST FINANCIAL SOFTWARE SOLUTIONS</a></td>
-              <td><?php echo $IBAN ?></td>
-              <td><?php echo $LICENSE_ISSUEDATE ?></td>
+              <td>41516316364</td>
+              <td>08-09-2029</td>
               <td class='actiontd'>
                 <div class="comp-action-buttons">
-                  <!-- <button onclick="navigateTo('pgrm.php?crn=<?php echo $MOLID?>')" class="comp-action-btn comp-view-btn" title="View company">
-                    <i class="fas fa-eye"></i>
-                  </button> -->
-                  <button class="comp-action-btn comp-edit-btn" title="Edit company" onclick="navigateTo('update-employer.php?crn=<?php echo $MOLID?>','<?php echo $MOLID?>')">	  
+                  <button class="comp-action-btn comp-edit-btn" title="Edit company" onclick="navigateTo('update-employer.html')">	  
                     <i class="fas fa-pencil-alt"></i>
                   </button>
                   <button class="comp-action-btn comp-delete-btn" title="Delete company">
@@ -386,9 +383,7 @@
                 </div>
               </td>
             </tr>
-			<?php
-			$slno++;
-			}
+
 			?>
           </tbody>
         </table>
@@ -397,28 +392,15 @@
       <!--  Pagination section -->
         <div class="pagination">
           <span class="page-label">Page:</span>
-		  <?php 
-		  if ($rcount>$limit)  { 
-			$pages=$rcount/$limit;$pages=$pages+1;$pages=(integer)  $pages;
-		  ?>
-          <button class="page-nav <?php if ($p<=1){echo "disabled";}?>" title="Previous Page" onclick="pagenation('<?php if ($p>0){echo $p-1;}?>','<?php echo $rcount?>');">
+          <button class="page-nav" title="Previous Page" onclick="pagenation();">
             <i class="fas fa-chevron-left"></i>
           </button>
-		  <?php 
-			
-			$i=1;  
-			
-			while ($i<=$pages) {
-				$j=$i;
-
-		  ?>
-          <button class="page-btn <?php if($i==$p){ echo "active";}?>" onclick="pagenation('<?php echo $i?>','<?php echo $rcount?>');"><?php echo $i?></button>
-		  <?php $i++; }?>
-		  <button class="page-nav <?php if ($p>=$pages){echo "disabled";}?>" title="Next Page" onclick="pagenation('<?php if ($p<$pages){echo $p+1;}?>','<?php echo $rcount?>');">
+          <button class="page-btn" onclick="pagenation();">1</button>
+		  <button class="page-nav" title="Next Page" onclick="pagenation();">
             <i class="fas fa-chevron-right"></i>
           </button>
-		  <?php }?>
         </div>  
+
     </div>
   </div>
   
