@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employer Management - WPS Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <script src="autocomplete-search.js?v=2.1"></script>
+
+  <style>
+    :root {
+      --primary-color: #4270f4;
+      --primary-light: #edf0fb;
+      --primary-dark: #0f2a65;
+      --secondary-color: #3b3f5c;
+      --gray-light: #f5f7ff;
+      --gray-medium: #e6e9f4;
+      --gray-dark: #828795;
+      --underline: #ff6f61;
+      --danger: #f36c6c;
+      --success: #2dbf78;
+      --white: #ffffff;
+      --text-primary: #262a39;
+      --text-secondary: #6c7380;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --border-radius: 18px;
+      --header-height: 30px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-light);
+      color: var(--text-primary);
+      padding: 25px;
+      font-size: 14px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header Styles */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: var(--header-height);
+	  margin-bottom: 3px;
+    }
+    
+	.page-title{
+	  position: relative;
+	  display: inline-block; 
+	  font-size: 22px;
+	  font-weight: 600;
+	  color: var(--primary-dark);
+	  margin-bottom: 20px;
+	  padding-bottom: 5px;
+	}
+
+	.page-title::after {
+	  content: "";
+	  position: absolute;
+	  bottom: 0;
+	  left: 0;
+	  width: 15%; 
+	  border-bottom: 3px solid var(--underline);
+	}
+
+    
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    /* Card Styles */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+    }
+    
+
+    /* Form Styles */
+	
+	.search-form {
+	  display: flex;
+	  align-items: center;
+	  gap: 15px;
+	  margin-bottom: 20px;
+	  background-color: var(--primary-light); 
+	  padding: 20px;
+	  border-radius: 12px;
+	}
+	
+    .input-group {
+      width: 800px;
+      position: relative;
+    }
+	
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+    }
+    
+    .input-control {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid var(--gray-medium);
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      color: var(--text-primary);
+    }
+    
+    .input-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(66, 112, 244, 0.15);
+      outline: none;
+    }
+    
+    .btn {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 8px 15px rgba(66, 112, 244, 0.2);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .btn:hover, .btn:focus {
+      background-color: #3265e6;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(66, 112, 244, 0.3);
+      outline: none;
+    }
+    
+    .btn-search {
+      margin-top: 24px;
+      height: 40px;
+    }
+	
+	/* Auto-complete Dropdown Styles -----------------*/
+	.autocomplete-dropdown {
+	  position: absolute;
+	  top: 100%;
+	  left: 0;
+	  right: 0;
+	  background-color: var(--white);
+	  border: 1px solid var(--gray-medium);
+	  border-top: none;
+	  border-radius: 0 0 12px 12px;
+	  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+	  max-height: 300px; /* Limit height for scrolling */
+	  overflow-y: auto;
+	  overflow-x: hidden;
+	  z-index: 1000;
+	  display: none;
+	}
+
+	.autocomplete-item {
+	  padding: 8px 16px;
+	  cursor: pointer;
+	  border-bottom: 1px solid var(--gray-light);
+	  transition: all 0.5s ease;
+	  display: flex;
+	  flex-direction: column;
+	  gap: 4px;
+	}
+
+	.autocomplete-item:last-child {
+	  border-bottom: none;
+	}
+
+	.autocomplete-item:hover,
+	.autocomplete-item.selected {
+	  background-color: var(--primary-light);
+	  transform: translateX(2px);
+	}
+
+	.company-name {
+	  font-weight: 600;
+	  color: var(--text-primary);
+	  font-size: 14px;
+	  line-height: 1.3;
+	}
+
+	.company-crn {
+	  background-color: var(--primary-light);
+	  padding: 3px 8px;
+	  border-radius: 6px;
+	  color: var(--primary-color);
+	  font-weight: 600;
+	  font-size: 11px;
+	  display: inline-block;
+	  width: fit-content;
+	  letter-spacing: 0.5px;
+	}
+
+	.autocomplete-item:hover .company-crn,
+	.autocomplete-item.selected .company-crn {
+	  background-color: var(--primary-color);
+	  color: var(--white);
+	}
+
+	.no-results {
+	  padding: 20px;
+	  text-align: center;
+	  color: var(--text-secondary);
+	  font-style: italic;
+	  font-size: 14px;
+	}
+
+	/* Custom scrollbar for dropdown */
+	.autocomplete-dropdown::-webkit-scrollbar {
+	  width: 6px;
+	}
+
+	.autocomplete-dropdown::-webkit-scrollbar-track {
+	  background: var(--gray-light);
+	  border-radius: 3px;
+	}
+
+	.autocomplete-dropdown::-webkit-scrollbar-thumb {
+	  background: var(--gray-dark);
+	  border-radius: 3px;
+	}
+
+	.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+	  background: var(--primary-color);
+	}
+	
+	/* View All Companies Button Styles------------------ */
+	.btn-view-all {
+	  background-color: var(--white);
+	  color: var(--secondary-color);
+	  border: 2px solid var(--gray-medium);
+	  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	  height: 40px;
+	  width: 40px;
+	  padding: 0;
+	  margin-left: 10px;
+	  margin-top: 24px;
+	  display: inline-flex;
+	  align-items: center;
+	  justify-content: center;
+	}
+
+	.btn-view-all:hover, .btn-view-all:focus {
+	  background-color: var(--secondary-color);
+	  color: var(--white);
+	  border-color: var(--secondary-color);
+	  box-shadow: 0 6px 18px rgba(59, 63, 92, 0.2);
+	  transform: translateY(-2px);
+	}
+
+	.btn-view-all i {
+	  font-size: 16px;
+	}
+		
+    .onboard-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: var(--gray-light);
+      border-radius: 12px;
+      border: 1px dashed var(--gray-dark);
+    }
+    
+    .not-found-text {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    
+    .btn-onboard {
+      background-color: var(--success);
+      box-shadow: 0 8px 15px rgba(45, 191, 120, 0.2);
+      height: 40px;
+      white-space: nowrap;
+    }
+    
+    .btn-onboard:hover, .btn-onboard:focus {
+      background-color: #24a769;
+      box-shadow: 0 10px 20px rgba(45, 191, 120, 0.3);
+    }
+	
+
+    /* Steps Section--------- */
+    .steps-container {
+      margin-top: 0px;
+    }
+    
+    .step {
+      margin-bottom: 18px;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .step::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 18px;
+      color: var(--primary-color);
+    }
+    
+    .step-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--primary-dark);
+    }
+    
+    .step-description {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+    
+    .step-description p {
+      margin-bottom: 6px;
+    }
+    
+    .step-highlight {
+      background-color: var(--primary-light);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+	.step-go{
+	  background-color: var(--primary-color);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: white;
+      font-weight: 500;	
+	}
+	
+	.step-onboard{
+	  background-color: var(--success);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: white;
+      font-weight: 500;	
+	}
+
+    /* Autofill Section */
+    .autofill-section {
+      margin-top: 20px;
+    }
+    
+    .autofill-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--primary-dark);
+    }
+    
+    .textarea-control {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
+      border: 1px solid var(--gray-medium);
+      border-radius: 10px;
+      font-size: 14px;
+      resize: vertical;
+      transition: all 0.3s ease;
+      color: var(--text-primary);
+      font-family: monospace;
+      margin-bottom: 15px;
+    }
+    
+    .textarea-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(66, 112, 244, 0.15);
+      outline: none;
+    }
+    
+    .btn-autofill {
+      background-color: var(--success);
+      box-shadow: 0 8px 15px rgba(45, 191, 120, 0.2);
+    }
+    
+    .btn-autofill:hover, .btn-autofill:focus {
+      background-color: #24a769;
+      box-shadow: 0 10px 20px rgba(45, 191, 120, 0.3);
+    }
+
+    .keyboard-shortcut {
+      display: inline-block;
+      padding: 2px 6px;
+      background-color: var(--gray-medium);
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 0 2px;
+    }
+
+    .link-text {
+      color: var(--primary-color);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+      
+      .search-form {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .input-group {
+        width: 100%;
+      }
+      
+      .btn-search, .btn-onboard {
+        width: 100%;
+      }
+      
+      .onboard-container {
+        text-align: center;
+      }
+	  
+	  .btn-view-all {
+		margin-left: 0;
+		margin-top: 10px;
+		width: 100%;
+	  }
+    }
+
+
+
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="welcome-section">
+      <h1 class="page-title">Employer Management</h1>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="card">
+       <form class="search-form" onsubmit="return false;">
+		  <div class="input-group">
+			<label for="crN">Enter CR Number / Employer Name</label>
+			<input 
+			  type="text" 
+			  id="crN" 
+			  name="search_input"
+			  class="input-control" 
+			  placeholder="e.g., 12345 or ABC Company"
+			  autocomplete="off"
+			  onkeyup="handleSearch(this.value)"
+			  onkeydown="handleKeyNavigation(event)"
+			  onfocus="clearSelectedCompany()"
+			>
+			<input type='hidden' name='crnval'  id='crnval'>
+			<!-- Autocomplete Search dropdown DIV -->
+			<div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+		  </div>
+		  
+		  <button onclick="handleGoClick()" type="button" class="btn btn-search">
+			<i class="fas fa-arrow-right"></i>
+			GO
+		  </button>
+		  
+		  <!-- View all companies button -->
+		  <button onclick="openCompanyListWindow()" type="button" class="btn btn-view-all" title="View All Companies">
+			<i class="fas fa-list"></i>
+		  </button>
+		</form>
+		
+
+			  
+      <div class="onboard-container">
+        <p class="not-found-text">Didn't find the employer? Onboard a new one here:</p>
+		<button onclick="navigateTo('add-employer.php')" type="button" class="btn btn-onboard">
+          <i class="fas fa-plus"></i>
+          Onboard New Employer
+        </button>
+      </div>
+      
+      <div class="steps-container">  
+	  
+        <div class="step">
+          <h4 class="step-title">Onboard a New Employer</h4>
+          <div class="step-description">
+		    <p>Click on the <span class="step-onboard">Onboard New Employer</span> button and enter the employer details to continue.</p>
+            <p>Alternatively, enter the employer’s<span class="step-highlight">Commercial Registration Number ( CRN)</span> in the search field..</p>
+            <p>The system will check if the employer is already onboarded and show the result.</p>
+            <p>If the employer is not found, click <span class="step-go">GO</span> to proceed.</p>
+			<p>Enter the basic employer details manually and continue.</p>	
+          </div>
+        </div>
+		
+		<div class="step">
+          <h4 class="step-title">Updating an Existing employer</h4>
+          <div class="step-description">
+            <p>Enter the <span class="step-highlight">Commercial Registration Number ( CRN)</span> or <span class="step-highlight">Employer Name</span> in the search field of the company.</p>
+            <p>The system will fetch matching employers if already onboarded.</p>
+            <p>Select the employer from the dropdown list.</p>
+			<p>Click on <span class="step-go">GO</span> , make the required changes, and save the updates.</p>		
+          </div>
+        </div>
+		
+	  </div>
+	</div>
+   </div>	  
+        
+	
+  
+
+  <script>
+    function navigateTo(url) {
+      // Change the current iframe content
+      window.location.href = url;
+    }
+	
+	function openCompanyListWindow() {
+      // Open a new window for view all companies list
+      const uploadWindow = window.open('companylist.php', 'Company List', 'width=1300,height=650');
+
+	} 
+
+  </script>
+</body>
+</html>
