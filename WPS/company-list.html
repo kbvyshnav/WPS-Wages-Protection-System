@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company List - WPS Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary-color: #4270f4;
+      --primary-light: #edf0fb;
+	  --companycontainer-light: #d1eeff;
+      --primary-dark: #0f2a65;
+      --secondary-color: #3b3f5c;
+      --gray-light: #f5f7ff;
+      --gray-medium: #e6e9f4;
+      --gray-dark: #828795;
+      --underline: #87a5f8;
+      --danger: #f36c6c;
+      --success: #2dbf78;
+      --white: #ffffff;
+      --text-primary: #262a39;
+      --text-secondary: #6c7380;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --border-radius: 18px;
+      --header-height: 50px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-light);
+      color: var(--text-primary);
+      padding: 30px;
+      font-size: 14px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+	
+    /* Header Styles */
+	.comp-header {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  margin-bottom: 15px;
+	  height: var(--header-height);
+	}
+	.comp-table-header-row {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  margin-bottom: 15px;
+	}
+	
+    .comp-page-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 5px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--underline);
+    }
+    
+	
+    /* Main Content Styles */
+    .comp-main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      margin: 0 auto;
+      width: 100%;
+      overflow: auto;
+    }
+    
+	
+    /* Card Styles */
+    .comp-card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      position: relative;
+    }
+    
+
+    /* Table Search Box */
+	.comp-table-search-container {
+	  display: flex;
+	  align-items: center;
+	  background: var(--white);
+	  border-radius: 6px;
+	  padding: 12px 16px;
+	  border: 1px solid var(--gray-medium);
+	  width: 500px;
+	  margin-bottom: 15px;
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+	  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.comp-table-search-container input {
+	  border: none;
+	  outline: none;
+	  background: transparent;
+	  width: 100%;
+	  font-size: 14px;
+	  margin-left: 8px;
+	}
+
+	/*focus effect on input */
+	.comp-table-search-container:has(input:focus) {
+	  border-color: var(--primary-color);
+	  box-shadow: 0 0 0 3px rgba(66, 112, 244, 0.15);
+	  outline: none;
+	}
+
+	.comp-table-search-container i {
+	  color: var(--primary-color);
+	  font-size: 14px;
+	}
+
+    
+    /* Table Styles ---------------------------------*/
+    .comp-table-container {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--gray-medium);
+      margin-bottom: 15px;
+    }
+    
+    .comp-list-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .comp-list-table th,
+    .comp-list-table td {
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    
+    .comp-list-table th {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    
+    .comp-list-table tr {
+      border-bottom: 1px solid var(--gray-medium);
+      transition: background-color 0.2s;
+    }
+    
+    .comp-list-table tbody tr:last-child {
+      border-bottom: none;
+    }
+    
+    .comp-list-table tbody tr:hover {
+      background-color: var(--gray-light);
+    }
+    
+    /* Action Buttons */
+    .comp-action-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    
+    .comp-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .comp-view-btn {
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+    }
+    
+    .comp-edit-btn {
+      background-color: rgba(255, 183, 43, 0.1);
+      color: #ffb72b;
+    }
+    
+    .comp-delete-btn {
+      background-color: rgba(243, 108, 108, 0.1);
+      color: var(--danger);
+    }
+    
+    .comp-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+	
+	/* Go to Page Styles */
+.comp-goto-page-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.comp-goto-page-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.comp-goto-page-input {
+  width: 60px;
+  padding: 6px 8px;
+  border: 1px solid var(--gray-medium);
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.comp-goto-page-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(66, 112, 244, 0.15);
+}
+
+.comp-goto-page-btn {
+  padding: 6px 12px;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.comp-goto-page-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Pagination Label Styles */
+.comp-pagination-label {
+  position: absolute;
+  bottom: 10px;
+  right: 40px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+    /* Pagination Styles */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      gap: 5px;
+    }
+    
+    .page-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background-color: var(--white);
+      border: 1px solid var(--gray-medium);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+    
+    .page-btn:hover {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      border-color: var(--primary-color);
+    }
+    
+    .page-btn.active {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-color: var(--primary-color);
+    }
+    
+    .page-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background-color: var(--white);
+      border: 1px solid var(--gray-medium);
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+    
+    .page-nav:hover {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      border-color: var(--primary-color);
+    }
+    
+    .page-nav.disabled {
+      color: var(--gray-dark);
+      cursor: not-allowed;
+    }
+    
+    
+  </style>
+</head>
+<body>
+  <header class="comp-header">
+    <div class="comp-welcome-section">
+      <h1 class="comp-page-title">WPS Company List</h1>
+    </div>
+
+	   <!-- Go to Page Section -->
+	  <div class="comp-goto-page-container">
+		<span class="comp-goto-page-label">Go to</span>
+		<input 
+		  type="number" 
+		  class="comp-goto-page-input" 
+		  id="pageNumberInput" 
+		  placeholder="1" 
+		  min="1"
+		  onkeypress="handlePageEnter(event)"
+		/>
+		<button class="comp-goto-page-btn" onclick="goToPage()">
+		  Go
+		</button>
+	  </div>
+  </header>
+  
+  <!-- Main Content -->
+  <div class="comp-main-content">
+    <div class="comp-card">
+      
+      <!-- Table Search Box -->
+      <div class="comp-table-search-container">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" placeholder="Search company..." aria-label="Search company" id="tableSearch" onkeyup="searchcompany()" />
+      </div>
+      
+      <!-- Table Container -->
+      <div class="comp-table-container">
+        <table class="comp-list-table" id="companyTable">
+          <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>CR Number</th>
+              <th>Company Name</th>
+              <th>Ac No</th>
+              <th>Date of registration</th>           
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>1234567</td>
+              <td>Muscat Press and Publishing House SAOC Careers</td>
+              <td>0000111122223333</td>
+              <td>23-04-2025</td>
+              <td>
+                <div class="comp-action-buttons">
+                  <button onclick="navigateTo('update-employer.html')" class="comp-action-btn comp-view-btn" title="View company">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="comp-action-btn comp-edit-btn" title="Edit company" onclick="navigateTo('update-company.html')">	  
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button class="comp-action-btn comp-delete-btn" title="Delete company">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>7534543</td>
+              <td>Petroleum Development Oman</td>
+              <td>0000112233445566</td>
+              <td>06-06-2025</td>
+              <td>
+                <div class="comp-action-buttons">
+                  <button class="comp-action-btn comp-view-btn" title="View company">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="comp-action-btn comp-edit-btn" title="Edit company">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button class="comp-action-btn comp-delete-btn" title="Delete company">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>0544234</td>
+              <td>Asyad Group</td>
+              <td>0000112233445566</td>
+              <td>13-05-2025</td>
+              <td>
+                <div class="comp-action-buttons">
+                  <button class="comp-action-btn comp-view-btn" title="View company">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="comp-action-btn comp-edit-btn" title="Edit company">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button class="comp-action-btn comp-delete-btn" title="Delete company">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div> 
+      
+             <!-- Pagination -->
+      <div class="pagination">
+        <button class="page-nav" title="Previous Page">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">4</button>
+        <button class="page-btn">5</button>
+        <button class="page-nav" title="Next Page">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+    </div>
+
+        <div class="comp-pagination-label">
+            Page 2 of 10
+        </div>
+
+  </div>
+
+  <script>
+  
+	   function navigateTo(url) {
+		  // Change the current iframe content
+		  window.location.href = url;
+		}
+  
+    // Simple search functionality for the table
+    function searchcompany() {
+      // Declare variables
+      let input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("tableSearch");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("companyTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        // Skip header row
+        if (i === 0) continue;
+        
+        let found = false;
+        // Check all cells in the row (except the last one with actions)
+        for (let j = 0; j < tr[i].cells.length - 1; j++) {
+          td = tr[i].cells[j];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              found = true;
+              break;
+            }
+          }
+        }
+        
+        if (found) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+
+  </script>
+</body>
+</html>

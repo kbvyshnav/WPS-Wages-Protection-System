@@ -529,13 +529,11 @@
 	  
         <div class="step">
           <h4 class="step-title">Onboard a New Employer</h4>
-          <div class="step-description">
-		    <p>Click on the <span class="step-onboard">Onboard New Employer</span> button and enter the employer details to continue.</p>
-            <p>Alternatively, enter the employer’s<span class="step-highlight">Commercial Registration Number ( CRN)</span> in the search field..</p>
-            <p>The system will check if the employer is already onboarded and show the result.</p>
-            <p>If the employer is not found, click <span class="step-go">GO</span> to proceed.</p>
-			<p>Enter the basic employer details manually and continue.</p>	
-          </div>
+		  <div class="step-description">
+			<p>First, search for the employer by name or <span class="step-highlight">Commercial Registration Number (CRN)</span> in the search field.</p>
+			<p>If the employer is not found, click the <span class="step-onboard">Onboard New Employer</span> button.</p>
+			<p>Then, manually enter all the required company details and proceed to onboard the employer.</p>
+		  </div>
         </div>
 		
 		<div class="step">
@@ -563,7 +561,7 @@
 	
 	function openCompanyListWindow() {
       // Open a new window for view all companies list
-      const uploadWindow = window.open('companylist.php', 'Company List', 'width=1300,height=650');
+      const uploadWindow = window.open('company-list.html', 'Company List', 'width=1300,height=650');
 
 	} 
 
