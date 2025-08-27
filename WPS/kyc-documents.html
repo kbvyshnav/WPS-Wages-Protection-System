@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KYC Documents - WPS Dashboard</title>
+  <link rel="stylesheet" href="searchcompany-styles.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary-color: #4270f4;
+      --primary-light: #edf0fb;
+      --primary-dark: #0f2a65;
+      --secondary-color: #3b3f5c;
+      --gray-light: #f5f7ff;
+      --gray-medium: #e6e9f4;
+      --gray-dark: #828795;
+      --underline: #ff6f61;
+      --danger: #f36c6c;
+      --success: #2dbf78;
+      --white: #ffffff;
+      --text-primary: #262a39;
+      --text-secondary: #6c7380;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --border-radius: 18px;
+      --header-height: 50px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-light);
+      color: var(--text-primary);
+      padding: 20px;
+      font-size: 14px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+	
+    /* Header Styles */
+    .kyc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: var(--header-height);
+	  margin-bottom: 3px;
+    }
+    
+    .kyc-page-title {
+	  position: relative;
+	  display: inline-block; 
+	  font-size: 22px;
+	  font-weight: 600;
+	  color: var(--primary-dark);
+	  margin-bottom: 5px;
+	  padding-bottom: 5px;
+	}
+
+	.kyc-page-title::after {
+	  content: "";
+	  position: absolute;
+	  bottom: 0;
+	  left: 0;
+	  width: 15%; 
+	  border-bottom: 3px solid var(--underline);
+	}
+
+
+    /* Main Content Styles */
+    .kyc-main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      margin: 0 auto;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+	
+	
+    /* Card Styles */
+    .kyc-card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+   
+    
+    /* Company Info Section ................. */
+    .kyc-company-info-container {
+	  margin: 0 0 15px 0;
+	  width: 100%;
+	  background-color: var(--primary-light);
+	  border-radius: 12px;
+	  padding: 20px;
+	  margin-bottom: 30px;
+	  display: flex;
+	  flex-direction: row;
+	  justify-content: space-between; 
+	  align-items: flex-start;
+	  flex-wrap: wrap;
+	  border-left: 4px solid var(--primary-color);
+	  gap: 20px; 
+	}
+	
+	.company-info-details {
+	  color: var(--text-primary);
+	  display: flex;
+	  flex-direction: column;
+	  gap: 10px;
+	  flex: 1;
+	  min-width: 250px;
+	}
+    
+    .info-label {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 400;
+    }
+    
+    .info-value {
+      color: var(--primary-dark);
+	  font-size: 18px;
+      font-weight: 600;
+    }
+	
+	/* Upload Section .......................*/
+	.kyc-upload-section {
+	  display: flex;
+	  align-items: center;
+	  gap: 15px;
+	  padding: 15px;
+	  background-color: var(--primary-light);
+	  border-radius: 8px;
+	  flex-wrap: wrap;
+	  flex: 1;
+	  justify-content: flex-end;
+	  min-width: 300px;
+	}
+		.kyc-upload-label {
+	  font-weight: 600;
+	  font-size: 13px;
+	  color: var(--primary-dark);
+	}
+
+	.kyc-upload-btn {
+	  background-color: var(--primary-color);
+	  color: var(--white);
+	  border: none;
+	  padding: 8px 15px;
+	  border-radius: 4px;
+	  cursor: pointer;
+	  font-size: 13px;
+	  font-weight: 500;
+	  transition: all 0.2s;
+	}
+
+	.kyc-upload-btn:hover {
+	  background-color: var(--primary-dark);
+	  transform: translateY(-2px);
+	  box-shadow: 0 3px 8px rgba(66, 112, 244, 0.2);
+	}
+
+
+    
+    /* Table Styles ---------------------------------*/
+    .kyc-table-container {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--gray-medium);
+      margin-bottom: 15px;
+    }
+    
+    .kyc-documents-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .kyc-documents-table th,
+    .kyc-documents-table td {
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    
+    .kyc-documents-table th {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    
+    .kyc-documents-table tr {
+      border-bottom: 1px solid var(--gray-medium);
+      transition: background-color 0.2s;
+    }
+    
+    .kyc-documents-table tbody tr:last-child {
+      border-bottom: none;
+    }
+    
+    .kyc-documents-table tbody tr:hover {
+      background-color: var(--gray-light);
+    }
+    
+    /* Action Buttons */
+    .kyc-action-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    
+    .kyc-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .kyc-view-btn {
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+    }
+    
+    .kyc-edit-btn {
+      background-color: rgba(255, 183, 43, 0.1);
+      color: #ffb72b;
+    }
+    
+    .kyc-delete-btn {
+      background-color: rgba(243, 108, 108, 0.1);
+      color: var(--danger);
+    }
+    
+    .kyc-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Status Badge */
+    .kyc-status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    
+    .kyc-status-active {
+      background-color: rgba(45, 191, 120, 0.1);
+      color: var(--success);
+    }
+    
+    /* Doc-Type Dropdown */
+    .kyc-document-type-select {
+      border: 1px solid var(--gray-medium);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      outline: none;
+      background-color: var(--white);
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+      
+    
+    /* Empty State */
+    .kyc-empty-state {
+      display: none;
+      text-align: center;
+      padding: 30px 20px;
+    }
+    
+    .kyc-empty-state i {
+      font-size: 40px;
+      color: var(--gray-dark);
+      margin-bottom: 10px;
+    }
+    
+    .kyc-empty-state h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    
+    .kyc-empty-state p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      max-width: 350px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <header class="kyc-header">
+    <div class="kyc-welcome-section">
+      <h1 class="kyc-page-title">KYC Documents</h1>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <div class="kyc-main-content">
+    <div class="kyc-card">
+      <!-- Enhanced Search Section -->
+      <form class="search-form" onsubmit="return false;">
+		  <div class="input-group">
+			<label for="crN">Enter CR Number / Company Name</label>
+			<input 
+			  type="text" 
+			  id="crN" 
+			  name="search_input"
+			  class="input-control" 
+			  placeholder="e.g., 12345 or ABC Company"
+			  autocomplete="off"
+			  onkeyup="handleSearch(this.value)"
+			  onkeydown="handleKeyNavigation(event)"
+			  onfocus="clearSelectedCompany()"
+			>
+			<!-- Autocomplete Search dropdown DIV -->
+			<div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+		  </div>
+		  
+		  <button onclick="handleGoClick()" type="button" class="btn btn-search">
+			<i class="fas fa-arrow-right"></i>
+			GO
+		  </button>
+		  
+		  <!-- View all companies button -->
+		  <button onclick="openCompanyListWindow()" type="button" class="btn btn-view-all" title="View All Companies">
+			<i class="fas fa-list"></i>
+		  </button>
+		</form>
+      
+      <!-- Updated Company Info Section -->
+      <div class="kyc-company-info-container">
+        <div class="company-info-details">
+          <div>
+            <span class="info-label">CR Number:</span>
+            <span class="info-value">0000001233334</span>
+          </div>
+          <div>
+            <span class="info-label">Company Name:</span>
+            <span class="info-value">Albwardy Damen </span>
+          </div>
+        </div>
+		
+		<div class="kyc-upload-section">
+        <span class="kyc-upload-label">Upload a new document:</span>
+        
+        <select class="kyc-document-type-select">
+          <option value="" disabled selected>Select document type</option>
+          <option value="emirates-id">Company Profile</option>
+          <option value="passport">Trade License</option>
+          <option value="trade-license">  of Owners and Auth person</option>
+          <option value="establishment-card">Employee List</option>
+          <option value="other">Letter of Authorization</option>
+		  <option value="other">Site Visit Report</option>
+		  <option value="other">Key Fact Statement</option>
+		  <option value="other">Other</option>
+        </select>
+        
+        <button class="kyc-upload-btn" onclick="openUploadWindow()">
+          <i class="fas fa-upload"></i> UPLOAD
+        </button>
+      </div>
+      </div>
+      
+      <!-- Table Container -->
+      <div class="kyc-table-container">
+        <table class="kyc-documents-table" id="documentsTable">
+          <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>Uploaded on</th>
+              <th>Document Type</th>
+              <th>File Name</th>
+              <th>Expires on</th>
+              <th>Remarks</th>       
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>12-05-2025</td>
+              <td>Letter of Authorization</td>
+              <td>Letter-of-authorization.pdf</td>
+              <td>12-05-2035</td>
+              <td>Company authorization document 2025</td>
+              <td>
+                <div class="kyc-action-buttons">
+                  <button class="kyc-action-btn kyc-view-btn" title="View Document">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="kyc-action-btn kyc-edit-btn" title="Edit Document">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button class="kyc-action-btn kyc-delete-btn" title="Delete Document">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Empty State -->
+      <div class="kyc-empty-state" id="emptyState">
+        <i class="fas fa-file-alt"></i>
+        <h3>No documents found</h3>
+        <p>Enter CR Number or company name to search for documents</p>
+      </div>
+      
+      <!-- Upload Section -->
+      
+    </div>
+  </div>
+
+  <script>
+    // Function to open upload window
+    function openUploadWindow() {
+      // Open a new window for document upload
+      const uploadWindow = window.open('', 'KYC Document Upload', 'width=650,height=500');
+      
+      // Basic content for the upload window
+      uploadWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Upload KYC Document</title>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+          <style>
+            :root {
+              --primary-color: #4270f4;
+              --primary-light: #edf0fb;
+              --primary-dark: #0f2a65;
+              --gray-light: #f5f7ff;
+              --gray-medium: #e6e9f4;
+              --white: #ffffff;
+              --text-primary: #262a39;
+            }
+            
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            }
+            
+            body {
+              background-color: var(--gray-light);
+              color: var(--text-primary);
+              padding: 15px;
+              font-size: 13px;
+            }
+            
+            .upload-container {
+              background-color: var(--white);
+              border-radius: 10px;
+              padding: 15px;
+              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+              max-width: 100%;
+              margin: 0 auto;
+            }
+            
+            h2 {
+              margin-bottom: 15px;
+              color: var(--primary-dark);
+              border-bottom: 1px solid var(--gray-medium);
+              padding-bottom: 8px;
+              font-size: 16px;
+            }
+            
+            .upload-form {
+              display: flex;
+              flex-direction: column;
+              gap: 12px;
+            }
+            
+            .form-row {
+              display: flex;
+              gap: 10px;
+            }
+            
+            .form-group {
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+              flex: 1;
+            }
+            
+            label {
+              font-weight: 500;
+              font-size: 12px;
+            }
+            
+            input, select, textarea {
+              padding: 6px 10px;
+              border: 1px solid var(--gray-medium);
+              border-radius: 4px;
+              font-size: 12px;
+            }
+            
+            .file-drop-area {
+              border: 2px dashed var(--gray-medium);
+              border-radius: 4px;
+              padding: 15px;
+              text-align: center;
+              cursor: pointer;
+              transition: all 0.3s;
+              margin: 5px 0;
+            }
+            
+            .file-drop-area:hover {
+              border-color: var(--primary-color);
+              background-color: var(--primary-light);
+            }
+            
+            .file-icon {
+              font-size: 22px;
+              color: var(--primary-color);
+              margin-bottom: 5px;
+            }
+            
+            .file-drop-area p {
+              margin: 2px 0;
+              font-size: 12px;
+            }
+            
+            .buttons {
+              display: flex;
+              justify-content: flex-end;
+              gap: 10px;
+              margin-top: 15px;
+            }
+            
+            button {
+              padding: 6px 15px;
+              border-radius: 4px;
+              font-size: 12px;
+              font-weight: 500;
+              cursor: pointer;
+              border: none;
+            }
+            
+            .cancel-btn {
+              background-color: var(--gray-medium);
+              color: var(--text-primary);
+            }
+            
+            .save-btn {
+              background-color: var(--primary-color);
+              color: var(--white);
+            }
+			
+			.selected-file {
+			  margin-top: 8px;
+			  padding: 6px 10px;
+			  background-color: var(--primary-light);
+			  border-radius: 4px;
+			  font-size: 11px;
+			  color: var(--primary-dark);
+			  display: none;
+			}
+
+			.selected-file i {
+			  margin-right: 6px;
+			  color: var(--primary-color);
+			}
+			
+          </style>
+        </head>
+        <body>
+          <div class="upload-container">
+            <h2>Upload KYC Document</h2>
+            
+            <div class="upload-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="uploadDate">Uploaded On</label>
+                  <input type="date" id="uploadDate" value="${new Date().toISOString().substr(0, 10)}">
+                </div>
+                
+                <div class="form-group">
+                  <label for="expiry">Expires On</label>
+                  <input type="date" id="expiry">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="docType">Document Type</label>
+                <select id="docType">
+                  <option value="" disabled selected>Select document type</option>
+				  <option value="emirates-id">Company Profile</option>
+				  <option value="passport">Trade License</option>
+				  <option value="trade-license">  of Owners and Auth person</option>
+				  <option value="establishment-card">Employee List</option>
+				  <option value="other">Letter of Authorization</option>
+				  <option value="other">Site Visit Report</option>
+				  <option value="other">Key Fact Statement</option>
+				  <option value="other">Other</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="remarks">Remarks</label>
+                <textarea id="remarks" rows="2" placeholder="Enter document remarks"></textarea>
+              </div>
+              
+				<div class="file-drop-area" onclick="document.getElementById('fileInput').click()">
+				  <div class="file-icon">
+					<i class="fas fa-file-upload"></i>
+				  </div>
+				  <p>Drag & drop file here or click to browse</p>
+				  <p><small>Supported: PDF, JPG, PNG (Max: 5MB)</small></p>
+				  <input type="file" id="fileInput" style="display: none;" onchange="displaySelectedFile(this)">
+				  <div class="selected-file" id="selectedFile">
+					<i class="fas fa-file"></i>
+					<span id="fileName"></span>
+				  </div>
+				</div>
+              
+              <div class="buttons">
+                <button class="cancel-btn" onclick="window.close()">Cancel</button>
+                <button class="save-btn">Save Document</button>
+              </div>
+            </div>
+          </div>
+		  <!-- <script>
+			function displaySelectedFile(input) {
+			  const selectedFileDiv = document.getElementById('selectedFile');
+			  const fileNameSpan = document.getElementById('fileName');
+			  
+			  if (input.files && input.files[0]) {
+				const file = input.files[0];
+				fileNameSpan.textContent = file.name;
+				selectedFileDiv.style.display = 'block';
+			  } else {
+				selectedFileDiv.style.display = 'none';
+			  }
+			}
+		  </script> -->
+        </body>
+        </html>
+      `);
+    }
+  </script>
+  
+</body>
+</html>
