@@ -1,0 +1,811 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Company - WPS Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary-color: #4270f4;
+      --primary-light: #edf0fb;
+      --primary-dark: #0f2a65;
+      --secondary-color: #3b3f5c;
+      --gray-light: #f5f7ff;
+      --gray-medium: #e6e9f4;
+      --gray-dark: #828795;
+      --underline: #87a5f8;
+      --danger: #f36c6c;
+      --success: #2dbf78;
+      --white: #ffffff;
+      --text-primary: #262a39;
+      --text-secondary: #6c7380;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --border-radius: 18px;
+      --header-height: 50px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-light);
+      color: var(--text-primary);
+      padding: 25px;
+      font-size: 16px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header Styles */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      height: var(--header-height);
+    }
+    
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--underline);
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1500px;
+      margin: 0 auto;
+      width: 100%;
+      overflow: auto;
+    }
+    
+    /* Card Styles */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--card-shadow);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+    }
+
+	/* Form Styles */
+    .form-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .form-field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 800px;
+      gap: 15px;
+    }
+    
+    .form-field-double {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 800px;
+      gap: 30px;
+    }
+    
+    .field-group {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex: 1;
+    }
+    
+    .field-label {
+      display: block;
+      min-width: 180px;
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    .field-input, .field-select {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 0;
+      border: none;
+      border-bottom: 2px solid var(--gray-medium);
+      font-size: 14px;     
+      color: var(--text-primary);
+      border-radius: 0;
+      background-color: transparent;
+    }
+    
+    .field-input:focus, .field-select:focus {
+      border-bottom: 2px solid var(--primary-color);
+      outline: none;
+      box-shadow: none;
+    }
+	
+    /* Button Styles */
+    .btn-container {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 30px;
+      gap: 15px;
+      max-width: 600px;
+    }
+
+    .btn {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      padding: 12px 30px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 8px 15px rgba(66, 112, 244, 0.2);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .btn:hover, .btn:focus {
+      background-color: #3265e6;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(66, 112, 244, 0.3);
+      outline: none;
+    }
+
+    .btn-secondary {
+      background-color: var(--gray-medium);
+      color: var(--text-primary);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary:hover, .btn-secondary:focus {
+      background-color: #d8dbe6;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary-dark);
+	  margin-top: 30px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--gray-medium);
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 30px;
+        height: auto;
+      }
+
+      .form-field {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .field-label {
+        width: 100%;
+        margin-bottom: 5px;
+      }
+      
+      .field-input {
+        width: 100%;
+      }
+      
+      .btn-container {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+	 /* ..............................Related persons Styles ......................................*/
+	.section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--gray-medium);
+    }
+    
+	/* Table Styles */
+	.table-container {
+	  overflow-x: auto;
+	  border-radius: 10px;
+	  border: 1px solid var(--gray-medium);
+	  margin-bottom: 30px;
+	}
+
+	.related-persons-table {
+	  width: 100%;
+	  border-collapse: collapse;
+	  table-layout: fixed; 
+	}
+
+	.related-persons-table th,
+	.related-persons-table td {
+	  padding: 6px 8px;
+	  text-align: left;
+	  font-size: 13px;
+	  vertical-align: middle;
+	}
+
+	.related-persons-table th {
+	  background-color: var(--primary-light);
+	  color: var(--primary-dark);
+	  font-weight: 600;
+	  position: sticky;
+	  top: 0;
+	  white-space: nowrap;
+	}
+
+	.related-persons-table td {
+	  padding: 6px 8px;
+	}
+
+	.related-persons-table tr {
+	  border-bottom: 1px solid var(--gray-medium);
+	}
+
+	.related-persons-table tbody tr:last-child {
+	  border-bottom: none;
+	}
+
+	/* Column Width Adjustments */
+	/* S. No. Column - Narrow */
+	.related-persons-table th:nth-child(1),
+	.related-persons-table td:nth-child(1) {
+	  width: 50px;
+	  min-width: 50px;
+	}
+
+	/* Name Column - Wide */
+	.related-persons-table th:nth-child(2),
+	.related-persons-table td:nth-child(2) {
+	  width: 180px;
+	  min-width: 150px;
+	}
+
+	/* Role Column - Medium */
+	.related-persons-table th:nth-child(3),
+	.related-persons-table td:nth-child(3) {
+	  width: 100px;
+	  min-width: 90px;
+	}
+
+	/* Stake % Column - Narrow */
+	.related-persons-table th:nth-child(4),
+	.related-persons-table td:nth-child(4) {
+	  width: 70px;
+	  min-width: 60px;
+	}
+
+	/* Nationality Column - Medium */
+	.related-persons-table th:nth-child(5),
+	.related-persons-table td:nth-child(5) {
+	  width: 100px;
+	  min-width: 90px;
+	}
+
+	/* ID Type Column - Medium */
+	.related-persons-table th:nth-child(6),
+	.related-persons-table td:nth-child(6) {
+	  width: 100px;
+	  min-width: 90px;
+	}
+
+	/* ID No. Column - Wide */
+	.related-persons-table th:nth-child(7),
+	.related-persons-table td:nth-child(7) {
+	  width: 130px;
+	  min-width: 110px;
+	}
+
+	/* Exp Date Column - Medium */
+	.related-persons-table th:nth-child(8),
+	.related-persons-table td:nth-child(8) {
+	  width: 110px;
+	  min-width: 100px;
+	}
+
+	/* Mobile Column - Wide */
+	.related-persons-table th:nth-child(9),
+	.related-persons-table td:nth-child(9) {
+	  width: 130px;
+	  min-width: 110px;
+	}
+
+	/* Our Cust No. Column - Medium */
+	.related-persons-table th:nth-child(10),
+	.related-persons-table td:nth-child(10) {
+	  width: 110px;
+	  min-width: 90px;
+	}
+
+	/* Actions Column - Narrow & Sticky */
+	.related-persons-table th:nth-child(11),
+	.related-persons-table td:nth-child(11) {
+	  width: 70px;
+	  min-width: 70px;
+	  position: sticky;
+	  right: 0;
+	  background-color: var(--primary-light);
+	  z-index: 10;
+	}
+
+	/* Actions column for data rows */
+	.related-persons-table td:nth-child(11) {
+	  background-color: #ffffff;
+	  border-left: 1px solid var(--gray-medium);
+	}
+
+	.table-input {
+	  width: 100%;
+	  padding: 6px 8px;
+	  border: 1px solid var(--gray-medium);
+	  border-radius: 6px;
+	  font-size: 13px;
+	  box-sizing: border-box; /* Ensures padding doesn't overflow */
+	}
+
+	.table-input:focus {
+	  border-color: var(--primary-color);
+	  box-shadow: 0 0 0 2px rgba(66, 112, 244, 0.15);
+	  outline: none;
+	}
+
+	.table-header-actions {
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	}
+
+	.delete-row-btn {
+	  background: transparent;
+	  border: none;
+	  color: var(--danger);
+	  cursor: pointer;
+	  padding: 4px;
+	  border-radius: 50%;
+	  width: 28px;
+	  height: 28px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  transition: all 0.2s;
+	}
+
+	.delete-row-btn:hover {
+	  background-color: rgba(243, 108, 108, 0.1);
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 768px) {
+	  .related-persons-table {
+		table-layout: auto; 
+	  }
+	  
+	  /* Adjust column widths for mobile */
+	  .related-persons-table th:nth-child(1),
+	  .related-persons-table td:nth-child(1) {
+		width: 50px;
+		min-width: 50px;
+	  }
+	  
+	  .related-persons-table th:nth-child(2),
+	  .related-persons-table td:nth-child(2) {
+		width: 150px;
+		min-width: 120px;
+	  }
+	  
+	  .related-persons-table th:nth-child(7),
+	  .related-persons-table td:nth-child(7) {
+		width: 120px;
+		min-width: 100px;
+	  }
+	  
+	  .related-persons-table th:nth-child(9),
+	  .related-persons-table td:nth-child(9) {
+		width: 120px;
+		min-width: 100px;
+	  }
+	}
+	
+	
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="welcome-section">
+      <h1 class="page-title">Employer Management</h1>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="card">
+      
+      <h2 class="section-title">Add Employer Details</h2>
+      
+      <form id="employerDetailsForm">
+        <div class="form-content">
+	   
+		  <div class="form-field-double">
+			<div class="field-group">
+				<label class="field-label" for="crN">CR Number*</label>
+				<input type="text" class="field-input" id="crN" required>
+			</div>
+			<div class="field-group">
+				<label class="field-label" for="custNo">CMETS Customer No.</label>
+				<input type="text" class="field-input" id="custNo">
+			</div>
+		  </div>
+		  
+		  <div class="form-field">
+            <label class="field-label" for="companyName">Company Name*</label>
+            <input type="text" class="field-input" id="companyName" required>
+          </div>
+		  
+          
+          <div class="form-field">
+            <label class="field-label" for="crnIssueDate">CRN Issue Date*</label>
+            <input type="date" class="field-input" id="crnIssueDate" required>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="crnExpDate">CRN Exp Date*</label>
+            <input type="date" class="field-input" id="crnExpDate" required>
+          </div>
+          
+		  
+		  <div class="form-field-double">
+            <div class="field-group">
+              <label class="field-label" for="companyType">Company Type*</label>
+              <select class="field-select" id="companyType" required>
+                <option value="">Select Company Type</option>
+                <option value="">Private</option>
+                <option value="">Public</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="invstGrade">if private, investement grade</label>
+              <select class="field-select" id="invstGrade" required>
+                <option value="">Select grade</option>
+                <option value="">11</option>
+                <option value="">12</option>
+              </select>
+            </div>
+          </div>
+		  
+          
+          <div class="form-field">
+            <label class="field-label" for="companyActivity">Company Activity / Type of business*</label>
+            <input type="text" class="field-input" id="companyActivity" required>
+          </div>
+		  
+		  <div class="form-field-double">
+            <div class="field-group">
+              <label class="field-label" for="noofEmp">No of employees</label>
+              <input type="text" class="field-input" id="noofEmp" required>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="noofBranch">No of company branches</label>
+              <input type="text" class="field-input" id="noofBranch" required>
+            </div>
+          </div>         
+          
+          <div class="form-field">
+            <label class="field-label" for="branch">GMEC Branch*</label>
+            <select class="field-input" id="branch" required>
+              <option value="">Select GMEC Branch</option>
+              <option value="DXB">Dubai (DXB)</option>
+              <option value="AUH">Abu Dhabi (AUH)</option>
+              <option value="SHJ">Sharjah (SHJ)</option>
+              <option value="RAK">Ras Al Khaimah (RAK)</option>
+              <option value="FUJ">Fujairah (FUJ)</option>
+              <option value="UAQ">Umm Al Quwain (UAQ)</option>
+              <option value="AJM">Ajman (AJM)</option>
+            </select>
+          </div>
+		  
+          
+          <div class="form-field">
+            <label class="field-label" for="pbNo">PB No.</label>
+            <input type="text" class="field-input" id="pbNo">
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="doorNo">Door No.</label>
+            <input type="text" class="field-input" id="doorNo">
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="buildingName">Building Name</label>
+            <input type="text" class="field-input" id="buildingName">
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="address1">Address 1*</label>
+            <input type="text" class="field-input" id="address1" required>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="address2">Address 2</label>
+            <input type="text" class="field-input" id="address2">
+          </div>
+
+		  <div class="form-field">
+            <label class="field-label" for="governorate">Governorate*</label>
+            <select class="field-input" id="governorate" required>
+              <option value="">Select GMEC Governorate</option>
+              <option value="Ad Dakhiliyah">Ad Dakhiliyah</option>
+              <option value="Ad Dhahirah">Ad Dhahirah</option>
+              <option value="Al Batinah North">Al Batinah North</option>
+              <option value="Al Batinah South">Al Batinah South</option>
+              <option value="Al Buraimi">Al Buraimi</option>
+              <option value="Al Wusta">Al Wusta</option>
+              <option value="Ash Sharqiyah North">Ash Sharqiyah North</option>
+			  <option value="Ash Sharqiyah South">Ash Sharqiyah South</option>
+			  <option value="Dhofar">Dhofar</option>
+			  <option value="Musandam">Musandam</option>
+			  <option value="Muscat">Muscat</option>
+            </select>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="bankAgent">Bank / Agent</label>
+            <select class="field-input" id="bankAgent" required>
+              <option value="">Select Bank / Agent</option>
+              <option value="Dubai">Dubai</option>
+              <option value="Abu Dhabi">Abu Dhabi</option>
+              <option value="Sharjah">Sharjah</option>
+              <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+              <option value="Fujairah">Fujairah</option>
+              <option value="Umm Al Quwain">Umm Al Quwain</option>
+              <option value="Ajman">Ajman</option>
+            </select>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="bankAcno">Bank ACNO IBAN*</label>
+            <input type="text" class="field-input" id="bankAcno" required>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="companyPhone">Company Phone*</label>
+            <input type="tel" class="field-input" id="companyPhone" required>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="companyEmail">Company Email*</label>
+            <input type="email" class="field-input" id="companyEmail" required>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="contactName">Contact Name*</label>
+            <input type="text" class="field-input" id="contactName" required>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="contactPhone">Contact Phone*</label>
+            <input type="tel" class="field-input" id="contactPhone" required>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="smsMobile">SMS Mobile*</label>
+            <input type="tel" class="field-input" id="smsMobile" required>
+          </div>
+        </div>
+		
+		
+		
+		
+		 <h2 class="section-title">Related Persons</h2>
+		 
+		 <div class="table-container">
+          <table class="related-persons-table" id="relatedPersonsTable">
+            <thead>
+              <tr>
+                <th>S. No.</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Stake %</th>
+                <th>Nationality</th>
+                <th>ID Type</th>
+                <th>ID No.</th>
+                <th>Exp Date</th>
+                <th>Mobile</th>
+                <th>Our Cust No.</th>
+                <th>
+                  <div class="table-header-actions">
+                    <span>Actions</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><input type="text" class="table-input" name="name[]"></td>
+                <td><input type="text" class="table-input" name="role[]"></td>
+                <td><input type="number" class="table-input" name="stake[]" min="0" max="100"></td>
+                <td><input type="text" class="table-input" name="nationality[]"></td>
+                <td>
+                  <select class="table-input" name="idType[]">
+                    <option value="">Select</option>
+                    <option value="Passport">Passport</option>
+                    <option value="Emirates ID">Emirates ID</option>
+                    <option value="National ID">National ID</option>
+                  </select>
+                </td>
+                <td><input type="text" class="table-input" name="idNo[]"></td>
+                <td><input type="date" class="table-input" name="expDate[]"></td>
+                <td><input type="tel" class="table-input" name="mobile[]"></td>
+                <td><input type="text" class="table-input" name="custNo[]"></td>
+                <td>
+                  <button type="button" class="delete-row-btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+			  <tr>
+                <td>2</td>
+                <td><input type="text" class="table-input" name="name[]"></td>
+                <td><input type="text" class="table-input" name="role[]"></td>
+                <td><input type="number" class="table-input" name="stake[]" min="0" max="100"></td>
+                <td><input type="text" class="table-input" name="nationality[]"></td>
+                <td>
+                  <select class="table-input" name="idType[]">
+                    <option value="">Select</option>
+                    <option value="Passport">Passport</option>
+                    <option value="Emirates ID">Emirates ID</option>
+                    <option value="National ID">National ID</option>
+                  </select>
+                </td>
+                <td><input type="text" class="table-input" name="idNo[]"></td>
+                <td><input type="date" class="table-input" name="expDate[]"></td>
+                <td><input type="tel" class="table-input" name="mobile[]"></td>
+                <td><input type="text" class="table-input" name="custNo[]"></td>
+                <td>
+                  <button type="button" class="delete-row-btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+			  <tr>
+                <td>3</td>
+                <td><input type="text" class="table-input" name="name[]"></td>
+                <td><input type="text" class="table-input" name="role[]"></td>
+                <td><input type="number" class="table-input" name="stake[]" min="0" max="100"></td>
+                <td><input type="text" class="table-input" name="nationality[]"></td>
+                <td>
+                  <select class="table-input" name="idType[]">
+                    <option value="">Select</option>
+                    <option value="Passport">Passport</option>
+                    <option value="Emirates ID">Emirates ID</option>
+                    <option value="National ID">National ID</option>
+                  </select>
+                </td>
+                <td><input type="text" class="table-input" name="idNo[]"></td>
+                <td><input type="date" class="table-input" name="expDate[]"></td>
+                <td><input type="tel" class="table-input" name="mobile[]"></td>
+                <td><input type="text" class="table-input" name="custNo[]"></td>
+                <td>
+                  <button type="button" class="delete-row-btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+			  <tr>
+                <td>4</td>
+                <td><input type="text" class="table-input" name="name[]"></td>
+                <td><input type="text" class="table-input" name="role[]"></td>
+                <td><input type="number" class="table-input" name="stake[]" min="0" max="100"></td>
+                <td><input type="text" class="table-input" name="nationality[]"></td>
+                <td>
+                  <select class="table-input" name="idType[]">
+                    <option value="">Select</option>
+                    <option value="Passport">Passport</option>
+                    <option value="Emirates ID">Emirates ID</option>
+                    <option value="National ID">National ID</option>
+                  </select>
+                </td>
+                <td><input type="text" class="table-input" name="idNo[]"></td>
+                <td><input type="date" class="table-input" name="expDate[]"></td>
+                <td><input type="tel" class="table-input" name="mobile[]"></td>
+                <td><input type="text" class="table-input" name="custNo[]"></td>
+                <td>
+                  <button type="button" class="delete-row-btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+			  <tr>
+                <td>5</td>
+                <td><input type="text" class="table-input" name="name[]"></td>
+                <td><input type="text" class="table-input" name="role[]"></td>
+                <td><input type="number" class="table-input" name="stake[]" min="0" max="100"></td>
+                <td><input type="text" class="table-input" name="nationality[]"></td>
+                <td>
+                  <select class="table-input" name="idType[]">
+                    <option value="">Select</option>
+                    <option value="Passport">Passport</option>
+                    <option value="Emirates ID">Emirates ID</option>
+                    <option value="National ID">National ID</option>
+                  </select>
+                </td>
+                <td><input type="text" class="table-input" name="idNo[]"></td>
+                <td><input type="date" class="table-input" name="expDate[]"></td>
+                <td><input type="tel" class="table-input" name="mobile[]"></td>
+                <td><input type="text" class="table-input" name="custNo[]"></td>
+                <td>
+                  <button type="button" class="delete-row-btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+	  
+        <div class="btn-container">
+          <button type="button" class="btn btn-secondary">
+            Close
+          </button>
+          <button type="submit" class="btn">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const employerDetailsForm = document.getElementById('employerDetailsForm');
+      
+      employerDetailsForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Form validation and submission logic would go here
+        alert('Employer details submitted successfully!');
+      });
+    });
+  </script>
+</body>
+</html>
