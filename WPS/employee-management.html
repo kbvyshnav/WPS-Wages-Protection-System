@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Management - WPS Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <link rel="stylesheet" href="searchcompany-styles.css">
+  <script src="autocomplete-search.js?v=2.3"></script>
+  <style>
+    :root {
+      --primary-color: #4270f4;
+      --primary-light: #edf0fb;
+	  --companycontainer-light: #f2f9fd;
+      --primary-dark: #0f2a65;
+      --secondary-color: #3b3f5c;
+      --gray-light: #f5f7ff;
+      --gray-medium: #e6e9f4;
+      --gray-dark: #828795;
+      --underline: #ff6f61;
+      --danger: #f36c6c;
+      --success: #2dbf78;
+      --white: #ffffff;
+      --text-primary: #262a39;
+      --text-secondary: #6c7380;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --border-radius: 18px;
+      --header-height: 50px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-light);
+      color: var(--text-primary);
+      padding: 20px;
+      font-size: 14px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+	
+    /* Header Styles................. */
+    .emp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: var(--header-height);
+	  margin-bottom: 3px;
+    }
+
+	.emp-page-title{
+	  position: relative;
+	  display: inline-block; 
+	  font-size: 22px;
+	  font-weight: 600;
+	  color: var(--primary-dark);
+	  margin-bottom: 5px;
+	  padding-bottom: 5px;
+	}
+
+	.emp-page-title::after {
+	  content: "";
+	  position: absolute;
+	  bottom: 0;
+	  left: 0;
+	  width: 15%; 
+	  border-bottom: 3px solid var(--underline);
+	}
+    
+	
+    /* Main Content Styles ..............*/
+    .emp-main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      margin: 0 auto;
+      width: 100%;
+      overflow: auto;
+    }
+    
+	
+    /* Card Styles ........................*/
+    .emp-card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    
+	    
+    /* Company Info Section .................. */
+    .emp-company-info-container {
+	  margin: 0 0 15px 0;
+	  width: 100%;
+	  background-color: var(--companycontainer-light);
+	  border-radius: 12px;
+	  padding: 20px;
+	  margin-bottom: 30px;
+	  display: flex;
+	  flex-direction: row;
+	  justify-content: space-between; 
+	  align-items: flex-start;
+	  flex-wrap: wrap;
+	  border-left: 4px solid var(--primary-color);
+	  gap: 20px; 
+	}
+	
+	.company-info-details {
+	  color: var(--text-primary);
+	  display: flex;
+	  flex-direction: column;
+	  gap: 10px;
+	  flex: 1;
+	  min-width: 250px;
+	}
+    
+    .info-label {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 400;
+    }
+    
+    .info-value {
+      color: var(--primary-dark);
+	  font-size: 18px;
+      font-weight: 600;
+    }
+	
+	/* Upload Section ..................*/
+	.emp-add-section {
+	  display: flex;
+	  align-items: center;
+	  gap: 15px;
+	  padding: 15px;
+	  background-color: var(--companycontainer-light);
+	  border-radius: 8px;
+	  flex-wrap: wrap;
+	  flex: 1;
+	  justify-content: flex-end;
+	  min-width: 300px;
+	}
+
+	.emp-add-btn {
+	  background-color: var(--primary-color);
+	  color: var(--white);
+	  border: none;
+	  padding: 12px 20px;
+	  border-radius: 8px;
+	  cursor: pointer;
+	  font-size: 14px;
+	  font-weight: 500;
+	  transition: all 0.3s;
+	  display: flex;
+	  align-items: center;
+	  gap: 8px;
+	  box-shadow: 0 4px 6px rgba(54, 179, 126, 0.2);
+	}
+
+	.emp-add-btn:hover {
+	  background-color: var(--primary-dark);
+	  transform: translateY(-2px);
+	  box-shadow: 0 6px 12px rgba(54, 179, 126, 0.3);
+	}
+
+	.emp-add-btn i {
+	  font-size: 16px;
+	}
+	
+	/* making employee box default hidden................ */
+	.emp-box{
+	
+	
+	}
+
+    /* Table Search Box................ */
+    .emp-table-search-container {
+      display: flex;
+      align-items: center;
+      background: var(--white);
+      border-radius: 6px;
+      padding: 8px 12px;
+      border: 1px solid var(--gray-medium);
+      width: 300px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    }
+
+    .emp-table-search-container input {
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 100%;
+      font-size: 13px;
+      margin-left: 8px;
+    }
+
+    .emp-table-search-container i {
+      color: var(--primary-color);
+      font-size: 14px;
+    }
+    
+    /* Table Styles ..........................*/
+    .emp-table-container {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--gray-medium);
+      margin-bottom: 15px;
+    }
+    
+    .emp-list-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .emp-list-table th,
+    .emp-list-table td {
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    
+    .emp-list-table th {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    
+    .emp-list-table tr {
+      border-bottom: 1px solid var(--gray-medium);
+      transition: background-color 0.2s;
+    }
+    
+    .emp-list-table tbody tr:last-child {
+      border-bottom: none;
+    }
+    
+    .emp-list-table tbody tr:hover {
+      background-color: var(--gray-light);
+    }
+    
+    /* Action Buttons */
+    .emp-action-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    
+    .emp-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .emp-view-btn {
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+    }
+    
+    .emp-edit-btn {
+      background-color: rgba(255, 183, 43, 0.1);
+      color: #ffb72b;
+    }
+    
+    .emp-delete-btn {
+      background-color: rgba(243, 108, 108, 0.1);
+      color: var(--danger);
+    }
+    
+    .emp-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Pagination Styles */
+    .emp-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      gap: 5px;
+    }
+    
+    .emp-page-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background-color: var(--white);
+      border: 1px solid var(--gray-medium);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+    
+    .emp-page-btn:hover {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      border-color: var(--primary-color);
+    }
+    
+    .emp-page-btn.active {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-color: var(--primary-color);
+    }
+    
+    .emp-page-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background-color: var(--white);
+      border: 1px solid var(--gray-medium);
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+    
+    .emp-page-nav:hover {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      border-color: var(--primary-color);
+    }
+    
+    .emp-page-nav.disabled {
+      color: var(--gray-dark);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="emp-header">
+    <div class="emp-welcome-section">
+      <h1 class="emp-page-title">Employee Management</h1>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <div class="emp-main-content">
+    <div class="emp-card">
+      <!-- Enhanced Search Section -->
+		<form class="search-form" onsubmit="return false;">
+		  <div class="input-group">
+			<label for="crN">Enter CR Number or company name to search for employees</label>
+			<input 
+			  type="text" 
+			  id="crN" 
+			  name="search_input"
+			  class="input-control" 
+			  placeholder="Search CR Number or company name"
+			  autocomplete="off"
+			  onkeyup="handleSearch(this.value)"
+			  onkeydown="handleKeyNavigation(event)"
+			  onfocus="clearSelectedCompany()"
+			>
+			<!-- Autocomplete Search dropdown DIV -->
+			<div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+		  </div>
+		  
+		  <button onclick="handleGoClick()" type="button" class="btn btn-search">
+			<i class="fas fa-arrow-right"></i>
+		  </button>
+		  
+		  <!-- View all companies button -->
+		  <button onclick="openCompanyListWindow()" type="button" class="btn btn-view-all" title="View All Companies">
+			<i class="fas fa-list"></i>
+		  </button>
+		</form>
+      
+      <!-- Updated Company Info Section -->
+      <div class="emp-company-info-container">
+        <div class="company-info-details">
+          <div>
+            <span class="info-label">CR Number:</span>
+            <span class="info-value">0000001111100</span>
+          </div>
+          <div>
+            <span class="info-label">Company Name:</span>
+            <span class="info-value">Apple Inc Corp. </span>
+          </div>
+        </div>
+		
+		<div class="emp-add-section">
+			<button onclick="navigateTo('add-employee.html')" type="button" class="emp-add-btn">
+			  <i class="fas fa-user-plus"></i> Add Employee
+			</button>
+		</div>
+      </div>
+      
+      <!-- Table Search Box -->
+	  <div class="emp-box">
+		  <div class="emp-table-search-container">
+			<i class="fas fa-search" aria-hidden="true"></i>
+			<input type="text" placeholder="Search employees..." aria-label="Search employees" id="tableSearch" onkeyup="searchEmployees()" />
+		  </div>
+		  
+		  <!-- Table Container -->
+		  <div class="emp-table-container">
+			<table class="emp-list-table" id="employeesTable">
+			  <thead>
+				<tr>
+				  <th>S.No.</th>
+				  <th>Emp ID</th>
+				  <th>Emp Name</th>
+				  <th>Ac No</th>
+				  <th>Nationality</th>           
+				  <th style="text-align: right;">Actions</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				<tr>
+				  <td>1</td>
+				  <td>0000001234567</td>
+				  <td>Hashim Amla</td>
+				  <td>0000111122223333</td>
+				  <td>South Africa</td>
+				  <td>
+					<div class="emp-action-buttons">
+					  <button class="emp-action-btn emp-view-btn" title="View Employee">
+						<i class="fas fa-eye"></i>
+					  </button>
+					  <button class="emp-action-btn emp-edit-btn" title="Edit Employee" onclick="navigateTo('update-employee.html')">	  
+						<i class="fas fa-pencil-alt"></i>
+					  </button>
+					  <button class="emp-action-btn emp-delete-btn" title="Delete Employee">
+						<i class="fas fa-trash-alt"></i>
+					  </button>
+					</div>
+				  </td>
+				</tr>
+
+			  </tbody>
+			</table>
+		  </div>
+	  </div>
+      
+      <!-- Pagination -->
+      <div class="emp-pagination">
+        <button class="emp-page-nav" title="Previous Page">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="emp-page-btn active">1</button>
+        <button class="emp-page-btn">2</button>
+        <button class="emp-page-btn">3</button>
+        <button class="emp-page-btn">4</button>
+        <button class="emp-page-btn">5</button>
+        <button class="emp-page-nav" title="Next Page">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  
+	   function navigateTo(url) {
+		  // Change the current iframe content
+		  window.location.href = url;
+		}
+  
+    // Simple search functionality for the table
+    function searchEmployees() {
+      // Declare variables
+      let input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("tableSearch");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("employeesTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        // Skip header row
+        if (i === 0) continue;
+        
+        let found = false;
+        // Check all cells in the row (except the last one with actions)
+        for (let j = 0; j < tr[i].cells.length - 1; j++) {
+          td = tr[i].cells[j];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              found = true;
+              break;
+            }
+          }
+        }
+        
+        if (found) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+    
+
+    // Add event listeners for pagination
+    document.addEventListener('DOMContentLoaded', function() {
+      const pageButtons = document.querySelectorAll('.emp-page-btn');
+      
+      pageButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons
+          pageButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Here you would normally load the data for the selected page
+          // For this demo, we're just updating the UI
+        });
+      });
+    });
+  </script>
+</body>
+</html>

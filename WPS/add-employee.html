@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Employee - WPS Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary-color: #4270f4;
+      --primary-light: #edf0fb;
+      --primary-dark: #0f2a65;
+      --secondary-color: #3b3f5c;
+      --gray-light: #f5f7ff;
+      --gray-medium: #e6e9f4;
+      --gray-dark: #828795;
+      --underline: #87a5f8;
+      --danger: #f36c6c;
+      --success: #2dbf78;
+      --white: #ffffff;
+      --text-primary: #262a39;
+      --text-secondary: #6c7380;
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --border-radius: 18px;
+      --header-height: 50px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-light);
+      color: var(--text-primary);
+      padding: 25px;
+      font-size: 16px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header Styles */
+	.header {
+	  display: flex;
+	  justify-content: flex-start;
+	  align-items: center;
+	  margin-bottom: 20px;
+	  height: var(--header-height);
+	}
+		
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--underline);
+    }
+	
+	.back-button {
+	  background-color: transparent;
+	  border: 1px solid var(--gray-dark);
+	  color: var(--gray-dark);
+	  border-radius: 6px;
+	  padding: 4px 10px;
+	  font-weight: 400;
+	  font-size: 13px;
+	  cursor: pointer;
+	  transition: all 0.2s ease;
+	  display: inline-flex;
+	  align-items: center;
+	  justify-content: center;
+	  gap: 6px;
+	  text-decoration: none;
+	  margin-left: 20px;
+	}
+
+	.back-button:hover, .back-button:focus {
+	  background-color: var(--gray-dark);
+	  color: var(--white);
+	  outline: none;
+	}
+
+	.back-button i {
+	  font-size: 12px;
+	}
+
+	.header-content {
+	  display: flex;
+	  align-items: baseline;
+	  gap: 0;
+	  width: 100%;
+	}
+	
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1500px;
+      margin: 0 auto;
+      width: 100%;
+      overflow: auto;
+    }
+    
+    /* Card Styles */
+    .employee-form-card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--card-shadow);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+    }
+
+    /* Form Styles */
+    .employee-form-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .form-field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 800px;
+      gap: 15px;
+    }
+    
+    .form-field-double {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 800px;
+      gap: 30px;
+    }
+    
+    .field-group {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex: 1;
+    }
+    
+    .field-label {
+      display: block;
+      min-width: 180px;
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    .field-input, .field-select {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 0;
+      border: none;
+      border-bottom: 2px solid var(--gray-medium);
+      font-size: 14px;     
+      color: var(--text-primary);
+      border-radius: 0;
+      background-color: transparent;
+    }
+    
+    .field-input:focus, .field-select:focus {
+      border-bottom: 2px solid var(--primary-color);
+      outline: none;
+      box-shadow: none;
+    }
+
+    /* Button Styles */
+    .form-actions {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 30px;
+      gap: 15px;
+      max-width: 800px;
+    }
+
+    .btn {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      padding: 12px 30px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 8px 15px rgba(66, 112, 244, 0.2);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .btn:hover, .btn:focus {
+      background-color: #3265e6;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(66, 112, 244, 0.3);
+      outline: none;
+    }
+
+    .btn-cancel {
+      background-color: var(--gray-medium);
+      color: var(--text-primary);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-cancel:hover, .btn-cancel:focus {
+      background-color: #d8dbe6;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--gray-medium);
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 30px;
+        height: auto;
+      }
+
+      .form-field, .form-field-double {
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: 100%;
+        gap: 10px;
+      }
+      
+      .field-group {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 5px;
+      }
+      
+      .field-label {
+        min-width: auto;
+        width: 100%;
+      }
+      
+      .field-input, .field-select {
+        width: 100%;
+        min-width: auto;
+      }
+      
+      .form-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+
+	/* For rounded rectangle light background icon */
+	.icon-box {
+	  display: inline-flex;
+	  align-items: center;
+	  justify-content: center;
+	  padding: 4px;
+	  background-color: var(--primary-light);
+	  color: var(--primary-color);
+	  border-radius: 6px;
+	  cursor: pointer;
+	  font-size: 16px;
+	  transition: background-color 0.2s, transform 0.2s;
+	}
+
+	.icon-box:hover {
+	  background-color: #d5defa;
+	  transform: scale(1.1);
+	}
+
+  </style>
+</head>
+<body>
+	<header class="header">
+	  <div class="header-content">
+		<div class="welcome-section">
+		  <h1 class="page-title">Employee Management</h1>
+		</div>
+		<button class="back-button" onclick="goBack()">
+		  <i class="fas fa-arrow-left"></i>
+		  Back
+		</button>
+	  </div>
+	</header>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="employee-form-card">
+      
+      <h2 class="section-title">Add Employee Details</h2>
+      
+      <form id="addEmployeeForm">
+        <div class="employee-form-content">
+		
+
+		  <div class="form-field-double">
+            <div class="field-group">
+              <label class="field-label" for="resId">Oman Resident ID*</label>
+              <input type="text" class="field-input" id="resId" required>
+            </div>
+			<div class="field-group">
+			  <label class="field-label" for="cmetsCus">CMETS Customer No.</label>
+			  <div style="display: flex; align-items: center; flex: 1; gap: 8px;">
+				<input type="text" class="field-input" id="cmetsCus" required>
+				<span class="icon-box" title="Advanced User Search">
+				  <i class="fas fa-search-plus"></i>
+				</span>
+			  </div>
+			</div>
+          </div>
+		  
+		  <div class="form-field">
+            <label class="field-label" for="idExpiry">ID Expiry Date*</label>
+            <input type="date" class="field-input" id="idExpiry" required>
+          </div>
+		  
+          <div class="form-field">
+            <label class="field-label" for="empName">Emp Name*</label>
+            <input type="text" class="field-input" id="empName" required>
+          </div>
+		  
+          <div class="form-field">
+            <label class="field-label" for="empDesignation">Designation*</label>
+            <input type="text" class="field-input" id="empDesignation" required>
+          </div>
+          
+		  
+          <div class="form-field">
+            <label class="field-label" for="empNationality">Nationality*</label>
+            <select class="field-select" id="empNationality" required>
+              <option value="">Select Country</option>
+              <option value="UAE">UAE</option>
+              <option value="India">India</option>
+              <option value="Sri Lanka">Sri Lanka</option>
+              <option value="Nepal">Nepal</option>
+            </select>
+          </div>
+          
+		  <div class="form-field-double">
+            <div class="field-group">
+              <label class="field-label" for="passportNo">Passport No.*</label>
+              <input type="text" class="field-input" id="passportNo" required>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="passportExpiry">Passport Expiry Date*</label>
+              <input type="date" class="field-input" id="passportExpiry" required>
+            </div>
+          </div>         
+          
+          <div class="form-field">
+            <label class="field-label" for="salfreq">Salary Payment Frequency</label>
+            <input type="text" class="field-input" id="salfreq">
+          </div>
+		  
+          <div class="form-field">
+            <label class="field-label" for="pbNo">PB No.</label>
+            <input type="text" class="field-input" id="pbNo">
+          </div>
+		  
+          <div class="form-field">
+            <label class="field-label" for="doorNo">Door No.</label>
+            <input type="text" class="field-input" id="doorNo">
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="buildingName">Building Name</label>
+            <input type="text" class="field-input" id="buildingName">
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="addressLine1">Address 1*</label>
+            <input type="text" class="field-input" id="addressLine1" required>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="addressLine2">Address 2</label>
+            <input type="text" class="field-input" id="addressLine2">
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="empGovernorate">Governorate*</label>
+            <select class="field-select" id="empGovernorate" required>
+              <option value="">Select GMEC Governorate</option>
+              <option value="Ad Dakhiliyah">Ad Dakhiliyah</option>
+              <option value="Ad Dhahirah">Ad Dhahirah</option>
+              <option value="Al Batinah North">Al Batinah North</option>
+              <option value="Al Batinah South">Al Batinah South</option>
+              <option value="Al Buraimi">Al Buraimi</option>
+              <option value="Al Wusta">Al Wusta</option>
+              <option value="Ash Sharqiyah North">Ash Sharqiyah North</option>
+			  <option value="Ash Sharqiyah South">Ash Sharqiyah South</option>
+			  <option value="Dhofar">Dhofar</option>
+			  <option value="Musandam">Musandam</option>
+			  <option value="Muscat">Muscat</option>
+            </select>
+          </div>
+          
+          <div class="form-field-double">
+            <div class="field-group">
+              <label class="field-label" for="bankAgent">Bank/Agent*</label>
+              <select class="field-select" id="bankAgent" required>
+                <option value="">Select Bank/Agent</option>
+                <option value="al-hilal">Al Hilal Ahli Bank Islamic</option>
+                <option value="bank-of-baroda">Bank of Baroda</option>
+                <option value="bank-muscat">Bank Muscat</option> 
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="bankRoutingCode">Routing Code:</label>
+              <input type="text" class="field-input" id="bankRoutingCode">
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="bankAccountIban">Bank ACNO IBAN*</label>
+            <input type="text" class="field-input" id="bankAccountIban" required>
+          </div>		  
+		  
+          <div class="form-field-double">
+            <div class="field-group">
+              <label class="field-label" for="cardIssuer">Card Issue by*</label>
+              <select class="field-select" id="cardIssuer" required>
+                <option value="">Select Issuer</option>
+                <option value="wtek-cards">WTEK CARDS</option>            
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="cardBicCode">Routing/Bic Code:</label>
+              <input type="text" class="field-input" id="cardBicCode">
+            </div>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="cardNumber">Card No.</label>
+            <input type="text" class="field-input" id="cardNumber">
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="paymentMode">Payment Mode*</label>
+            <select class="field-select" id="paymentMode" required>
+              <option value="">Select Payment Mode</option>
+              <option value="bank-acc">Bank Account</option> 
+              <option value="card">Card</option>			  	  
+            </select>
+          </div>         
+                 
+          <div class="form-field">
+            <label class="field-label" for="empMobile">Mobile Phone*</label>
+            <input type="tel" class="field-input" id="empMobile" required>
+          </div>
+          
+          <div class="form-field">
+            <label class="field-label" for="empEmail">Email*</label>
+            <input type="email" class="field-input" id="empEmail" required>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-cancel">
+            Close
+          </button>
+          <button type="submit" class="btn">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const addEmployeeForm = document.getElementById('addEmployeeForm');
+      
+      addEmployeeForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Form validation and submission logic would go here
+        alert('Employee details submitted successfully!');
+      });
+    });
+  </script>
+</body>
+</html>
